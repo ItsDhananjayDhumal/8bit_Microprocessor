@@ -24,7 +24,7 @@ Create the modules for assembly here
 3. Index Registers (X, Y, Z, Accumulator, etc)
 4. Special Registers (Stack pointer, Frame pointer, Instruction Reg, etc)
 5. Program Counter
-6. Clock
+6. Control Unit
 
 ---
 
