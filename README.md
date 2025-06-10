@@ -11,7 +11,8 @@ Create the modules for assembly here
   > * Mention whether module is combinational or procedural
   > * If possible add a simple diagram that shows all input and output lines. This will be useful in assembly as we won't have to check the Verilog code often.
 
-5. ALU should use carry look ahead adder. 
+5. ALU should use carry look ahead adder.
+6. Commit everything in main branch. 
 
 ---
 
