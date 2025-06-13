@@ -1,0 +1,55 @@
+# Vivado project files to ignore
+
+# Project-wide cache, runs, temp data
+.cache/
+.hw/
+.ip_user_files/
+.sim/
+.xpr.cache/
+.gen/
+.srcs/
+.runs/
+.webtalk/
+
+# Simulation-generated files
+*.wdb
+*.vcd
+*.jou
+*.log
+*.str
+*.tmp
+*.bak
+*.pb
+*.Xil/
+
+# Vivado-specific folders
+*.data/
+*.restore/
+*.crash/
+*.srcs/
+*.project/
+
+# IP/BD-related auto-generated files
+component.xml
+*.xci
+*.xpr
+*.xdc.auto
+vivado*
+vivado*.log
+vivado*.jou
+
+# OS-specific and editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Optional: ignore output files
+*.bit
+*.bin
+*.mcs
+*.elf
+*.mem
+*.prm
+*.dcp
