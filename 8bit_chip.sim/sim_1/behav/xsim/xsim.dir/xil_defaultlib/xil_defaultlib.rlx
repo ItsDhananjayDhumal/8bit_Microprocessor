@@ -7,4 +7,5 @@ C:/Users/GURU PRANAV PR/8bit_chip/src/ALU/LogicalUnit/LogicalUnit.v,1750326491,v
 C:/Users/GURU PRANAV PR/8bit_chip/src/ALU/LogicalUnit/LogicalUnit_tb.v,1750325846,verilog,,,,LogicalUnit_tb,,,,,,,,
 C:/Users/GURU PRANAV PR/8bit_chip/src/ALU/comparator/comparator.v,1749830495,verilog,,C:/Users/GURU PRANAV PR/8bit_chip/src/ALU/comparator/comparator_tb.v,,comparator,,,,,,,,
 C:/Users/GURU PRANAV PR/8bit_chip/src/ALU/comparator/comparator_tb.v,1749830564,verilog,,,,comparator_tb,,,,,,,,
-C:/Users/GURU PRANAV PR/8bit_chip/src/utils/muxes.v,1750325509,verilog,,C:/Users/GURU PRANAV PR/8bit_chip/src/ALU/LogicalUnit/LogicalUnit_tb.v,,mux2x1;mux2x1_vec;mux4x1;mux4x1_vec;mux8x1;mux8x1_vec,,,,,,,,
+C:/Users/GURU PRANAV PR/8bit_chip/src/Registers/RegisterFile.v,1750330143,verilog,,C:/Users/GURU PRANAV PR/8bit_chip/src/Registers/RegisterFile_tb.v,,RegisterFile,,,,,,,,
+C:/Users/GURU PRANAV PR/8bit_chip/src/Registers/RegisterFile_tb.v,1750330219,verilog,,,,RegisterFile_tb,,,,,,,,

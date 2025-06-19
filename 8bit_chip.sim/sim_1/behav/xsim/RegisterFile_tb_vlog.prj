@@ -1,7 +1,7 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  \
-"../../../../src/ALU/LogicalUnit/LogicalUnit.v" \
-"../../../../src/ALU/LogicalUnit/LogicalUnit_tb.v" \
+"../../../../src/Registers/RegisterFile.v" \
+"../../../../src/Registers/RegisterFile_tb.v" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"
