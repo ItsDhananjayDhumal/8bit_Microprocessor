@@ -79,7 +79,7 @@ assign AndOut = ina & inb;
 
 assign OrOut = ina | inb;
 
-assign SLTOut = (ina < inb) ? 8'b00000000 : 8'b00000001;
+assign SLTOut = (ina < inb) ? 8'b00000001 : 8'b00000000;
 
 // setting output based on operation
 
