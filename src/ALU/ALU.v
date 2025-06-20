@@ -1,0 +1,118 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 20.06.2025 16:03:23
+// Design Name: 
+// Module Name: ALU
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module ALU(ina, inb, operation, cr, ov, ng, zr, out);
+input [7:0] ina, inb;
+input [3:0] operation;
+
+output reg [7:0] out;
+output cr, ov, zr, ng;
+
+parameter ADD = 4'b0010,    //Add
+          SUB = 4'b0110,    //Subtract
+          AND = 4'b0000,    //AND
+          OR = 4'b0001,     //OR
+          SLT = 4'b0111,    //Set on Less Than
+          LS = 4'b0011,     //Left Shift
+          URS = 4'b0101,    //Unsigned Right Shift
+          SRS = 4'b0100,    //Signed Right Shift
+          RRO = 4'b1000,    //Right Rotate
+          LRO = 4'b1001;    //Left Rotate
+
+wire [7:0] LeftShift, 
+           SignedRightShift, 
+           UnsignedRightShift,
+           RotateRight,
+           RotateLeft,
+           AndOut,
+           OrOut,
+           AdderOut,
+           STLOut;
+           
+reg SubControl; 
+
+// Instantiation of modules
+
+ALU_Adder Adder_Module (.a(ina),
+                        .b(inb),
+                        .cin(SubControl),
+                        .out(AdderOut),
+                        .cout(adder_cout),
+                        .carry(cr),
+                        .overflow(ov));
+                 
+left_shift LS_Module (.in(ina),
+                      .out(LeftShift));
+                              
+signed_right_shift SRS_Module (.in(ina),
+                               .out(SignedRightShift));
+                               
+unsigned_right_shift URS_Module (.in(ina),
+                                 .out(UnsignedRightShift));
+                                 
+rotate_right RRO_Module (.in(ina),
+                         .out(RotateRight));
+                         
+rotate_left LRO_Module (.in(ina),
+                        .out(RotateRight));
+                        
+assign AndOut = ina & inb;
+
+assign OrOut = ina | inb;
+
+assign SLTOut = (ina < inb) ? 8'b00000000 : 8'b00000001;
+
+// setting output based on operation
+
+always @(*) begin
+    if (operation == ADD) begin
+        SubControl = 1'b0;
+        out = AdderOut;
+    end
+    else if (operation == SUB) begin
+        SubControl = 1'b1;
+        out = AdderOut;
+    end
+    else if (operation == AND)
+        out = AndOut;
+    else if (operation == OR)
+        out = OrOut;
+    else if (operation == LS)
+        out = LeftShift;
+    else if (operation == SRS)
+        out = SignedRightShift;
+    else if (operation == URS)
+        out = UnsignedRightShift;
+    else if (operation == RRO)
+        out = RotateRight;
+    else if (operation == LRO)
+        out = RotateLeft;
+    else if (operation == SLT)
+        out = STLOut;
+end
+
+// the flags
+
+assign zr = ~|(out);
+assign ng = out[7];
+
+endmodule
