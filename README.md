@@ -19,15 +19,16 @@ Create the modules for assembly here
 
 ## Pending:
 
+1. Control Unit
+
+---
+
+## Completed:
+
 1. ALU
 2. RAM64k
 3. Index Registers (X, Y, Z, Accumulator, etc)
 4. Special Registers (Stack pointer, Frame pointer, Instruction Reg, etc)
 5. Program Counter
-6. Control Unit
-
----
-
-## Completed:
 
 ---
