@@ -24,7 +24,7 @@ module pc_testbench;
     pc_enable=0;
     inp=8'h000;
 
-    $display(Time | Reset | PC_En | Load | Input | Output");
+    $display("Time | Reset | PC_En | Load | Input | Output");
     $display("-----|-------|-------|---------|-------|-------");
 
     #10 reset=0;
