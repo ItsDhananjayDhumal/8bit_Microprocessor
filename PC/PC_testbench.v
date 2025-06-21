@@ -33,8 +33,8 @@ module pc_testbench;
   
     #10 pc_enable=1;
       repeat(5)begin
-      #10 $display("%4d | %b | %b | %02h | %02h",
-               $time,reset,pc_enable,ld,inp,out);
+        #10 $display("%4d | %b | %b | %b | %02h | %02h",
+                     $time,reset,pc_enable,ld,inp,out);
       end
 
     #10 pc_load = 1; inp = 8'h18; pc_enable = 0;
