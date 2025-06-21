@@ -55,7 +55,7 @@ module pc_testbench;
 
    #10 reset = 1;
    #10 $display("%4d |   %b   |   %b   |    %b    |  %02h   |   %02h", 
-                $time, reset, pc_enable, pc_load, pc_in, pc_out);
+                $time, reset, pc_enable, ld, inp, out);
 
    #10 $finish;
  end
