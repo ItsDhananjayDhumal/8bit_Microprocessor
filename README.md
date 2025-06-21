@@ -12,7 +12,7 @@ Create the modules for assembly here
   > * If possible add a simple diagram that shows all input and output lines. This will be useful in assembly as we won't have to check the Verilog code often.
 
 5. ALU should use carry look ahead adder.
-6. Commit everything in main branch.
+6. Clone dev branch on your computer. After adding code, push into dev branch. Don't bother with main.
 7. After all modules are made, we will instantiate them in 8bit_microprocessor and assemble them.
 
 ---
