@@ -37,11 +37,11 @@ module pc_testbench;
                      $time,reset,pc_enable,ld,inp,out);
       end
 
-    #10 pc_load = 1; inp = 8'h18; pc_enable = 0;
+    #10 ld = 1; inp = 8'h18; pc_enable = 0;
     #10 $display("%4d |   %b   |   %b   |    %b    |  %02h   |   %02h", 
                  $time, reset, pc_enable, ld, inp, out); 
 
-    #10 pc_load = 0; pc_enable = 1;
+    #10 ld = 0; pc_enable = 1;
          repeat(3) begin
          #10 $display("%4d |   %b   |   %b   |    %b    |  %02h   |   %02h", 
                        $time, reset, pc_enable, ld, inp, out);
