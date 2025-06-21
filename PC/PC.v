@@ -13,7 +13,7 @@ module program_counter (
       out<=inp;
     end
     else if(reset)begin
-      out<=8'h000;
+      out<=8'h00;
     end
     else if(pc_enable)begin
       out<=out+1;
