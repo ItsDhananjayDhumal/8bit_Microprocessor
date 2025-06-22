@@ -29,6 +29,7 @@ parameter ADD = 4'b0010,    //Add
           SUB = 4'b0110,    //Subtract
           AND = 4'b0000,    //AND
           OR = 4'b0001,     //OR
+          NOT = 4'b1111,    //NOT
           SLT = 4'b0111,    //Set on Less Than
           LS = 4'b0011,     //Left Shift
           URS = 4'b0101,    //Unsigned Right Shift
@@ -61,7 +62,9 @@ always @(*) begin
         else if (func == 6'b111011)
             operation = ROR;
         else if (func == 6'b111110)
-            operation = ROL;                                                
+            operation = ROL;
+        else if (func == 6'b000001)
+            operation = NOT;                                                
         end
     end
 endmodule
