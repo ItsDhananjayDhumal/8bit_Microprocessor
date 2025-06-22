@@ -20,10 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module unsigned_right_shift(in, out);
+module unsigned_right_shift(in, shamt, out);
 input [7:0] in;
+input [4:0] shamt;
 output [7:0] out;
 
-assign out = {1'b0, in[7:1]};
+assign out = in >> shamt;
 
 endmodule
