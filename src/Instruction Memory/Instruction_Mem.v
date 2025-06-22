@@ -21,10 +21,10 @@
 
 
 module Instruction_Mem(address, instruction);
-input [9:0] address;
+input [31:0] address;
 output [31:0] instruction;
 
-reg [7:0] mem [1023:0];
+reg [7:0] mem [4294967295:0];
 
 initial begin
     mem[0] = 8'b00000000; // instruction 0

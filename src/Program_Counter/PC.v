@@ -4,11 +4,11 @@ module ProgramCounter(
     input wire clk,
     input wire reset,
     input wire pc_write,
-    input wire [9:0] next_pc,
-    output reg[9:0] pc
+    input wire [31:0] next_pc,
+    output reg[31:0] pc
 );
     initial begin
-        pc <= 10'b0000000000;
+        pc <= 32'b0;
     end
 
     always @(posedge clk or posedge reset) begin
