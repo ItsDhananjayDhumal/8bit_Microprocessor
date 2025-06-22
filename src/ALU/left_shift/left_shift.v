@@ -20,10 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module left_shift(in, out);
+module left_shift(in, shamt, out);
 input [7:0] in;
+input [4:0] shamt;
 output [7:0] out;
 
-assign out = {in[6:0], 1'b0};
+assign out = in << shamt;
 
 endmodule
