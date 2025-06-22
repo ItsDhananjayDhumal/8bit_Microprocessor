@@ -25,11 +25,16 @@ input [1:0] ALUOp;
 input [5:0] func;
 output reg [3:0] operation;
 
-parameter ADD = 4'b0010,
-          SUB = 4'b0110,
-          AND = 4'b0000,
-          OR = 4'b0001,
-          SLT = 4'b0111;
+parameter ADD = 4'b0010,    //Add
+          SUB = 4'b0110,    //Subtract
+          AND = 4'b0000,    //AND
+          OR = 4'b0001,     //OR
+          SLT = 4'b0111,    //Set on Less Than
+          LS = 4'b0011,     //Left Shift
+          URS = 4'b0101,    //Unsigned Right Shift
+          SRS = 4'b0100,    //Signed Right Shift
+          ROR = 4'b1000,    //Right Rotate
+          ROL = 4'b1001;    //Left Rotate
 
 always @(*) begin
     if (ALUOp == 2'b00)
@@ -47,6 +52,16 @@ always @(*) begin
             operation = OR;
         else if (func == 6'b001010) 
             operation = SLT;
+        else if (func == 6'b111101)
+            operation = LS;
+        else if (func == 6'b111010)
+            operation = SRS;
+        else if (func == 6'b111001)
+            operation = URS;
+        else if (func == 6'b111011)
+            operation = ROR;
+        else if (func == 6'b111110)
+            operation = ROL;                                                
         end
     end
 endmodule
