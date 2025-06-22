@@ -20,23 +20,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Instruction_Mem(address, instruction);
+module instruction_mem(address, instruction);
 input [31:0] address;
 output [31:0] instruction;
 
-reg [7:0] mem [4294967295:0];
-
+reg [7:0] mem [65535:0];
+wire [31:0] aligned_addr = address & ~32'h00000003;
 initial begin
-    mem[0] = 8'b00000000; // instruction 0
-    mem[1] = 8'b11111111;
-    mem[2] = 8'b01010101;
-    mem[3] = 8'b00001111;
-    mem[4] = 8'b11001100; // instruction 1
-    mem[5] = 8'b00110011;
-    mem[6] = 8'b11110000;
-    mem[7] = 8'b10010010;
+  $readmemb("machinecode.mem", mem);
 end
 
-assign instruction = {mem[address], mem[address + 1], mem[address + 2], mem[address + 3]};
+assign instruction = {mem[aligned_addr], mem[aligned_addr + 1], mem[aligned_addr + 2], mem[aligned_addr + 3]};
 
 endmodule

@@ -20,13 +20,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module tb_ram64K;
+module tb_ram_256B;
 reg        clk;
 reg        we;
-reg [15:0] addr;
+reg [7:0] addr;
 reg [7:0]  wdata;
 wire [7:0] rdata;
-ram64K dut(.clk(clk),.we(we),.addr(addr),.wdata(wdata),.rdata(rdata));
+ram_256B dut(.clk(clk),.we(we),.addr(addr),.wdata(wdata),.rdata(rdata));
 
 always #5 clk=~clk;
 
@@ -40,7 +40,7 @@ initial begin
     
     #10;
     
-    addr = 13'h1234;
+    addr = 8'h12;
     wdata = 8'hAB;
     we = 1;
     #10; //one clock edge
@@ -49,12 +49,12 @@ initial begin
     #10;
     #10;
     
-    addr = 13'h5678;
+    addr = 8'h56;
     wdata = 8'hBC;
     we = 1;
     #10; //one clock edge
     
-    addr = 13'h5678;
+    addr = 8'h34;
     we=0; //read
     #10;
     $display("%h", rdata);

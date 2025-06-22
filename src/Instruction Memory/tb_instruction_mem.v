@@ -20,16 +20,18 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Instruction_Mem_tb();
-reg [9:0] addr;
+module tb_instruction_mem();
+reg [31:0] addr;
 wire [31:0] out;
 
-Instruction_Mem DUT (addr, out);
+instruction_mem DUT (addr, out);
 
 initial begin
-    $monitor($time, "addr=%d, out=%b", addr, out);
-        #5 addr = 10'd0;
-        #5 addr = 10'd4;
+    $monitor($time, "addr=%h, out=%b", addr, out);
+        #5 addr = 32'h00000000;
+        #5 addr = 32'h00000005;
+        #5 addr = 32'h00000009;
+        #5 addr = 32'h0000000D;
         #5 $finish;
     end
 endmodule

@@ -20,15 +20,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 //8 bit width R/W Byte Addressing (not word addressing)
-module ram64K(
+module ram_256B(
     input       clk,
     input       we, //write enable (0 if read 1 if write)
-    input [15:0]addr, //13 bit address
+    input [7:0]addr, //8 bit address
     input  [7:0]wdata, // read data from RAM
     output reg [7:0]rdata  //write data to RAM
     );
     
-    reg [7:0]mem [65535:0];
+    reg [7:0]mem [255:0];
     
     always @(posedge clk) begin
         if (we)
