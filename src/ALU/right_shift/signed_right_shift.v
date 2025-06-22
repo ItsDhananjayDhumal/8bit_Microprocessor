@@ -20,10 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module signed_right_shift(in, out);
+module signed_right_shift (in, shamt, out);
 input [7:0] in;
+input [4:0] shamt;
 output [7:0] out;
 
-assign out = {in[7], in[7:1]};
+assign out = $signed(in) >>> shamt;
 
 endmodule
