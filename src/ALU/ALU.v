@@ -20,8 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ALU(ina, inb, operation, cr, ov, ng, zr, out);
+module ALU(ina, inb, operation, shamt, cr, ov, ng, zr, out);
 input [7:0] ina, inb;
+input [4:0] shamt;
 input [3:0] operation;
 
 output reg [7:0] out;
@@ -35,8 +36,8 @@ parameter ADD = 4'b0010,    //Add
           LS = 4'b0011,     //Left Shift
           URS = 4'b0101,    //Unsigned Right Shift
           SRS = 4'b0100,    //Signed Right Shift
-          RRO = 4'b1000,    //Right Rotate
-          LRO = 4'b1001;    //Left Rotate
+          ROR = 4'b1000,    //Right Rotate
+          ROL = 4'b1001;    //Left Rotate
 
 wire [7:0] LeftShift, 
            SignedRightShift, 
@@ -61,25 +62,30 @@ ALU_Adder Adder_Module (.a(ina),
                         .overflow(ov));
                  
 left_shift LS_Module (.in(ina),
+                      .shamt(shamt),
                       .out(LeftShift));
                               
 signed_right_shift SRS_Module (.in(ina),
+                               .shamt(shamt),
                                .out(SignedRightShift));
                                
 unsigned_right_shift URS_Module (.in(ina),
+                                 .shamt(shamt),
                                  .out(UnsignedRightShift));
                                  
 rotate_right RRO_Module (.in(ina),
+                         .shamt(shamt),
                          .out(RotateRight));
                          
 rotate_left LRO_Module (.in(ina),
+                        .shamt(shamt),
                         .out(RotateRight));
                         
 assign AndOut = ina & inb;
 
 assign OrOut = ina | inb;
 
-assign SLTOut = (ina < inb) ? 8'b00000001 : 8'b00000000;
+assign SLTOut = (ina < inb) ? 8'b00000000 : 8'b00000001;
 
 // setting output based on operation
 
@@ -102,9 +108,9 @@ always @(*) begin
         out = SignedRightShift;
     else if (operation == URS)
         out = UnsignedRightShift;
-    else if (operation == RRO)
+          else if (operation == ROR)
         out = RotateRight;
-    else if (operation == LRO)
+          else if (operation == ROL)
         out = RotateLeft;
     else if (operation == SLT)
         out = STLOut;
