@@ -20,10 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module rotate_left(in, out);
+module rotate_left(in, shamt, out);
 input [7:0] in;
+input [4:0] shamt;
 output [7:0] out;
 
-assign out = {in[6:0], in[7]};
+assign out = (in << shamt) | (in >> (8 - shamt));
 
 endmodule
