@@ -32,12 +32,13 @@ parameter ADD = 4'b0010,    //Add
           SUB = 4'b0110,    //Subtract
           AND = 4'b0000,    //AND
           OR = 4'b0001,     //OR
+          NOT = 4'b1111,    //NOT
           SLT = 4'b0111,    //Set on Less Than
           LS = 4'b0011,     //Left Shift
           URS = 4'b0101,    //Unsigned Right Shift
           SRS = 4'b0100,    //Signed Right Shift
-          ROR = 4'b1000,    //Right Rotate
-          ROL = 4'b1001;    //Left Rotate
+          RRO = 4'b1000,    //Right Rotate
+          LRO = 4'b1001;    //Left Rotate
 
 wire [7:0] LeftShift, 
            SignedRightShift, 
@@ -46,6 +47,7 @@ wire [7:0] LeftShift,
            RotateLeft,
            AndOut,
            OrOut,
+           NotOut,
            AdderOut,
            STLOut;
            
@@ -85,6 +87,8 @@ assign AndOut = ina & inb;
 
 assign OrOut = ina | inb;
 
+assign NotOut = ~(ina);
+
 assign SLTOut = (ina < inb) ? 8'b00000000 : 8'b00000001;
 
 // setting output based on operation
@@ -108,12 +112,14 @@ always @(*) begin
         out = SignedRightShift;
     else if (operation == URS)
         out = UnsignedRightShift;
-    else if (operation == ROR)
+    else if (operation == RRO)
         out = RotateRight;
-    else if (operation == ROL)
+    else if (operation == LRO)
         out = RotateLeft;
     else if (operation == SLT)
         out = STLOut;
+    else if (operation == NOT)
+        out = NotOut;
 end
 
 // the flags
