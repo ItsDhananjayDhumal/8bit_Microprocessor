@@ -108,9 +108,9 @@ always @(*) begin
         out = SignedRightShift;
     else if (operation == URS)
         out = UnsignedRightShift;
-          else if (operation == ROR)
+    else if (operation == ROR)
         out = RotateRight;
-          else if (operation == ROL)
+    else if (operation == ROL)
         out = RotateLeft;
     else if (operation == SLT)
         out = STLOut;
