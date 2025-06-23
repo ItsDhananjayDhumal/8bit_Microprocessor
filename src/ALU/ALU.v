@@ -49,7 +49,8 @@ wire [7:0] LeftShift,
            OrOut,
            NotOut,
            AdderOut,
-           STLOut;
+           SLTOut,
+           adder_cout;
            
 reg SubControl; 
 
@@ -81,7 +82,7 @@ rotate_right RRO_Module (.in(ina),
                          
 rotate_left LRO_Module (.in(ina),
                         .shamt(shamt),
-                        .out(RotateRight));
+                        .out(RotateLeft));
                         
 assign AndOut = ina & inb;
 
@@ -117,7 +118,7 @@ always @(*) begin
     else if (operation == LRO)
         out = RotateLeft;
     else if (operation == SLT)
-        out = STLOut;
+        out = SLTOut;
     else if (operation == NOT)
         out = NotOut;
 end
