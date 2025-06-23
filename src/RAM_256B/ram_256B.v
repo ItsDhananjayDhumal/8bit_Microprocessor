@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 14.06.2025 00:41:31
+// Create Date: 23.06.2025 18:29:43
 // Design Name: 
-// Module Name: ram64K
+// Module Name: ram_256B
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,23 +19,26 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-//8 bit width R/W Byte Addressing (not word addressing)
+
 module ram_256B(
     input       clk,
-    input       we, //write enable (0 if read 1 if write)
-    input [7:0]addr, //8 bit address
-    input  [7:0]wdata, // read data from RAM
-    output reg [7:0]rdata  //write data to RAM
+    input       MemWrite,
+    input       MemRead,
+    input [7:0] addr, //8 bit address
+    input [7:0] wdata, // write data to memory
+    
+    output reg [7:0] out  // output (at given address)
     );
     
-    reg [7:0]mem [255:0];
-    
-    always @(posedge clk) begin
-        if (we)
-            mem[addr] <= wdata;
-        else
-            rdata <= mem[addr];
-    end
+reg [7:0]mem [255:0];
+
+
+always @(posedge clk) begin
+    if (MemRead)
+        out <= mem[addr];
+    else if (MemWrite)
+        mem[addr] <= wdata;
+end
     
     
 endmodule
