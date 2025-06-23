@@ -32,11 +32,11 @@ always @(*) begin
         // R Instruction
         6'b000000 : begin
                     {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump} = 8'b10010000;
-                    ALUOp = 2'b10; // func filed
+                    ALUOp = 2'b10; // func field
                     end
         // Add Immediate
         6'b001000 : begin
-                    {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump} = 8'b10010000;
+                    {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump} = 8'b01010000;
                     ALUOp = 2'b00; // Add
                     end
         // Sub Immediate
@@ -47,7 +47,7 @@ always @(*) begin
         // Load Word Immediate
         6'b001010 : begin
                     {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump} = 8'b01010000;
-                    ALUOp = 2'b00; // Add (with reg 31, 8d0)
+                    ALUOp = 2'b00; // Add (with reg 31 (8d0))
                     end
         // BEQ
         6'b000100 : begin
@@ -67,7 +67,7 @@ always @(*) begin
         // Store Word
         6'b101011 : begin
                     {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump} = 8'b01000100;
-                    ALUOp = 2'b00;
+                    ALUOp = 2'b00; // Add
                     end
         
         default : begin
