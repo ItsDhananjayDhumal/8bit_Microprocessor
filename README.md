@@ -16,15 +16,15 @@ Select dev branch for source and simulation code. Read instructions before pushi
 7. After all modules are made, we will instantiate and assemble them in 8bit_microprocessor.v.
 
 ---
+## Single Cycle
 
-## Pending:
+![Datapath with module names, ports and wire declarations](SingleCycle.jpg)
 
-1. Control Unit
-2. Datapath
+### Pending:
 
----
+1. Datapath
 
-## Completed:
+### Completed:
 
 1. ALU
 2. ALU Control Unit
@@ -32,5 +32,6 @@ Select dev branch for source and simulation code. Read instructions before pushi
 4. Register File (32 Bytes)
 5. Instruction Memory
 6. Program Counter
+7. Control Unit
 
 ---
