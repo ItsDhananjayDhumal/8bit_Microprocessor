@@ -1,6 +1,7 @@
 # 8 Bit Microprocessor
 
-Select dev branch for source and simulation code. Read instructions before pushing/commiting any files.
+**Select dev branch for source and simulation code text.** Read instructions before pushing/commiting any files. 
+
 
 ## INSTRUCTIONS
 1. Complete structural modelling must be mentioned for each module in a separate file that should be added in the folder of that module (for multi cycle).
