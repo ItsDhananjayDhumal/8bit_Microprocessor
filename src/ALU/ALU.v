@@ -50,7 +50,10 @@ wire [7:0] LeftShift,
            NotOut,
            AdderOut,
            SLTOut,
-           adder_cout;
+           
+           adder_cout,
+           adder_carry,
+           adder_overflow;
            
 reg SubControl; 
 
@@ -61,8 +64,8 @@ ALU_Adder Adder_Module (.a(ina),
                         .cin(SubControl),
                         .out(AdderOut),
                         .cout(adder_cout),
-                        .carry(cr),
-                        .overflow(ov));
+                        .carry(adder_carry),
+                        .overflow(adder_overflow));
                  
 left_shift LS_Module (.in(ina),
                       .shamt(shamt),
@@ -125,6 +128,8 @@ end
 
 // the flags
 
+assign cr = (operation == ADD || operation == SUB) ? adder_carry : 1'b0;
+assign ov = (operation == ADD || operation == SUB) ? adder_overflow : 1'b0;
 assign zr = ~|(out);
 assign ng = out[7];
 
