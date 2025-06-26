@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 10ns / 1ps
 
 module Regisger_tb;
     reg clk;
