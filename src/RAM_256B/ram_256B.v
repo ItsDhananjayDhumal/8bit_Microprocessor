@@ -34,10 +34,13 @@ reg [7:0]mem [255:0];
 
 
 always @(posedge clk) begin
-    if (MemRead)
-        out <= mem[addr];
-    else if (MemWrite)
+    if (MemWrite)
         mem[addr] <= wdata;
+end
+
+always @(*) begin
+    if (MemRead)
+        out = mem[addr];
 end
     
     
