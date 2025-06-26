@@ -67,7 +67,7 @@ always @(*) begin
         // Store Word
         6'b101011 : begin
                     {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump} = 8'b01000100;
-                    ALUOp = 2'b00; // Add
+                    ALUOp = 2'b00;
                     end
         
         default : begin
