@@ -26,6 +26,7 @@ output [31:0] instruction;
 
 reg [7:0] mem [65535:0];
 wire [31:0] aligned_addr = address & ~32'h00000003;
+
 initial begin
   $readmemb("machinecode.mem", mem);
 end
