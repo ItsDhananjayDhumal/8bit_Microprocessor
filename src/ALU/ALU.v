@@ -49,9 +49,9 @@ wire [7:0] LeftShift,
            OrOut,
            NotOut,
            AdderOut,
-           SLTOut,
+           SLTOut;
            
-           adder_cout,
+wire       adder_cout,
            adder_carry,
            adder_overflow;
            
