@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 10ps / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -48,7 +48,8 @@ wire RegDst,
      MemtoReg, 
      MemWrite, 
      ALUSrc, 
-     RegWrite;
+     RegWrite,
+     BranchFlip;
      
 wire carry,
      overflow,
@@ -93,7 +94,8 @@ Control_Unit ControlUnit (.opcode(instruction[31:26]),
                           .ALUOp(ALUOp),
                           .MemWrite(MemWrite),
                           .ALUSrc(ALUSrc),
-                          .RegWrite(RegWrite));
+                          .RegWrite(RegWrite),
+                          .BranchFlip(BranchFlip));
                           
 ALU_Control ALUControl (.func(instruction[5:0]),
                         .ALUOp(ALUOp),
@@ -121,7 +123,7 @@ ram_256B RAM (.clk(clk),
 assign jump_addr = {pcplus4[31:28], instruction[25:0], 2'b00};              
 assign branch_addr = pcplus4 + {{14{instruction[15]}}, instruction[15:0], 2'b00};
 
-assign pcsrc = (zero & Branch) ? branch_addr : pcplus4;
+assign pcsrc = ((zero ^ BranchFlip) & Branch) ? branch_addr : pcplus4;
 
 assign next_pc = (Jump) ? jump_addr : pcsrc;
 
