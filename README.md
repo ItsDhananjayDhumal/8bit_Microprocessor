@@ -23,7 +23,7 @@
 
 ### Pending:
 
-1. Datapath
+
 
 ### Completed:
 
@@ -34,5 +34,6 @@
 5. Instruction Memory
 6. Program Counter
 7. Control Unit
+8. Datapath
 
 ---
