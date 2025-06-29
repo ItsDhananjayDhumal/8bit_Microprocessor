@@ -2,6 +2,8 @@
 
 **Select dev branch for source and simulation code text.** Read instructions before pushing/commiting any files. 
 
+All refernece documents and project details are in this [notion teamspace](https://www.notion.so/219672bc2d6b80178e6aff4c0baf0b52?v=219672bc2d6b801b9d2a000cb919a71e). Use IIT Indore's institute email to access drive folder.
+
 
 ## INSTRUCTIONS
 1. Complete structural modelling must be mentioned for each module in a separate file that should be added in the folder of that module (for multi cycle).
