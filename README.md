@@ -2,7 +2,7 @@
 
 **Select dev branch for source and simulation code text.** Read instructions before pushing/commiting any files. 
 
-All refernece documents and project details are in this [notion teamspace](https://www.notion.so/219672bc2d6b80178e6aff4c0baf0b52?v=219672bc2d6b801b9d2a000cb919a71e). Use IIT Indore's institute email to access drive folder.
+All refernece documents and project details are in this [notion teamspace](https://www.notion.so/1f8672bc2d6b808e9c27cb4ff6534a75?v=1f8672bc2d6b80278d6d000cef808db9&source=copy_link). Use IIT Indore's institute email to access drive folder.
 
 
 ## INSTRUCTIONS
