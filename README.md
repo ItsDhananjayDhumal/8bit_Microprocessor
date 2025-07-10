@@ -1,6 +1,6 @@
 # 8 Bit Microprocessor
 
-**Select dev branch for source and simulation code text.** Read instructions before pushing/commiting any files. 
+**Select [dev branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocessor/tree/dev) for source and simulation code text.** Read instructions before pushing/commiting any files. 
 
 All refernece documents are in this [drive folder](https://drive.google.com/drive/folders/1Xs3oDFEjL9iQ51fppOAhW1H2Fd3vk4z2). Use IIT Indore's institute email to access.
 
@@ -19,13 +19,13 @@ All refernece documents are in this [drive folder](https://drive.google.com/driv
 7. After all modules are made, we will instantiate and assemble them in 8bit_microprocessor.v.
 
 ---
-## Single Cycle
+## Single Cycle (not pipelined)
 
 ![Datapath with module names, ports and wire declarations](SingleCycle.jpg)
 
 ### Pending:
 
-
+--
 
 ### Completed:
 
@@ -39,3 +39,7 @@ All refernece documents are in this [drive folder](https://drive.google.com/driv
 8. Datapath
 
 ---
+
+## Pipelining
+Check [pipeline branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocessor/tree/pipeline) for pipelined version of single cycle microprocessor
+> * The pipelined single cycle microprocessor is not completed yet.
