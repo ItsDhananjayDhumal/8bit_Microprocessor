@@ -1,0 +1,63 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 12.07.2025 14:57:34
+// Design Name: 
+// Module Name: IDEX
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module IDEX(clk, ID_read_data1, ID_read_data2, EX_read_data1, EX_read_data2, ID_instruction, ID_pcplus4, EX_instruction, EX_pcplus4, ID_ALUOp, EX_ALUOp, ID_ALUSrc, ID_RegDst, EX_ALUSrc, EX_RegDst, ID_Branch, ID_BranchFlip, ID_MemRead, ID_MemWrite, ID_Jump, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, ID_RegWrite, ID_MemtoReg, EX_RegWrite, EX_MemtoReg);
+
+input clk;
+input [7:0] ID_read_data1, ID_read_data2;
+input [31:0] ID_instruction, ID_pcplus4;
+input [1:0] ID_ALUOp;
+input  ID_ALUSrc, ID_RegDst, ID_Branch, ID_BranchFlip, ID_MemRead, ID_MemWrite, ID_Jump, ID_RegWrite, ID_MemtoReg;
+
+output reg [7:0] EX_read_data1, EX_read_data2;
+output reg [31:0] EX_instruction, EX_pcplus4;
+output reg [1:0] EX_ALUOp;
+output reg EX_ALUSrc, EX_RegDst, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg;
+
+
+
+reg [7:0] read_data1, read_data2;
+reg [31:0] instruction, pcplus4; // entire instruction is passed for immediate value, and branch, jump address calculation in execute stage,
+                                 // and for write address of register file (in R type and LW). pcplus4 for aforementioned addr calculation
+
+
+// the EX control lines
+reg [1:0] ALUOp;
+reg ALUSrc, RegDst;
+
+// the MEM control lines
+reg Branch, BranchFlip, MemRead, MemWrite, Jump;
+
+// the WB control lines
+reg RegWrite, MemtoReg;
+
+always @(posedge clk) begin
+    {read_data1, read_data2} <= {ID_read_data1, ID_read_data2};
+    {instruction, pcplus4} <= {ID_instruction, ID_pcplus4};
+    {ALUOp, ALUSrc, RegDst, Branch, BranchFlip, MemRead, MemWrite, Jump, RegWrite, MemtoReg} <= {ID_ALUOp, ID_ALUSrc, ID_RegDst, ID_Branch, ID_BranchFlip, ID_MemRead, ID_MemWrite, ID_Jump, ID_RegWrite, ID_MemtoReg};
+    
+    {EX_read_data1, EX_read_data2} <= {read_data1, read_data2};
+    {EX_instruction, EX_pcplus4} <= {instruction, pcplus4};
+    {EX_ALUOp, EX_ALUSrc, EX_RegDst, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg} <= {ALUOp, ALUSrc, RegDst, Branch, BranchFlip, MemRead, MemWrite, Jump, RegWrite, MemtoReg};
+end
+
+endmodule
