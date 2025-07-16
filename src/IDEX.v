@@ -34,30 +34,12 @@ output reg [1:0] EX_ALUOp;
 output reg EX_ALUSrc, EX_RegDst, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg;
 
 
-
-reg [7:0] read_data1, read_data2;
-reg [31:0] instruction, pcplus4; // entire instruction is passed for immediate value, and branch, jump address calculation in execute stage,
-                                 // and for write address of register file (in R type and LW). pcplus4 for aforementioned addr calculation
-
-
-// the EX control lines
-reg [1:0] ALUOp;
-reg ALUSrc, RegDst;
-
-// the MEM control lines
-reg Branch, BranchFlip, MemRead, MemWrite, Jump;
-
-// the WB control lines
-reg RegWrite, MemtoReg;
-
 always @(posedge clk) begin
-    {read_data1, read_data2} <= {ID_read_data1, ID_read_data2};
-    {instruction, pcplus4} <= {ID_instruction, ID_pcplus4};
-    {ALUOp, ALUSrc, RegDst, Branch, BranchFlip, MemRead, MemWrite, Jump, RegWrite, MemtoReg} <= {ID_ALUOp, ID_ALUSrc, ID_RegDst, ID_Branch, ID_BranchFlip, ID_MemRead, ID_MemWrite, ID_Jump, ID_RegWrite, ID_MemtoReg};
-    
-    {EX_read_data1, EX_read_data2} <= {read_data1, read_data2};
-    {EX_instruction, EX_pcplus4} <= {instruction, pcplus4};
-    {EX_ALUOp, EX_ALUSrc, EX_RegDst, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg} <= {ALUOp, ALUSrc, RegDst, Branch, BranchFlip, MemRead, MemWrite, Jump, RegWrite, MemtoReg};
+
+    {EX_read_data1, EX_read_data2} <= {ID_read_data1, ID_read_data2};
+    {EX_instruction, EX_pcplus4} <= {ID_instruction, ID_pcplus4};
+    {EX_ALUOp, EX_ALUSrc, EX_RegDst, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg} <= {ID_ALUOp, ID_ALUSrc, ID_RegDst, ID_Branch, ID_BranchFlip, ID_MemRead, ID_MemWrite, ID_Jump, ID_RegWrite, ID_MemtoReg};
+
 end
 
 endmodule
