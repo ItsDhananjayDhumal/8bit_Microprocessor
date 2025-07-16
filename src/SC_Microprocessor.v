@@ -19,216 +19,231 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-//_IDEX/_IFID, etc mean output from those pipeline registers
+
 module SC_Microprocessor(clk, reset, enable);
 
 input clk, reset, enable;
 
-
-    parameter ALUSrc = 0, //EX Control Signals
-              ALUOp_0 = 1,
-              ALUOp_1 = 2,
-              RegDst = 3;
-    parameter MemWrite = 0, //M Control Singals
-              MemRead = 1,
-              BranchFlip = 2,
-              Branch = 3;
-    parameter RegWrite = 0, //WB Control Signals
-              MemtoReg = 1;
-              
-              
-wire [31:0] instruction, 
-            pc, 
-            pcplus4, 
-            next_pc, 
-            jump_addr, 
-            branch_addr;
+wire [31:0] IF_pcplus4,
+            IF_instruction;
             
-            
-wire [7:0] read_data1, 
-           read_data2, 
-           ALUOut, 
-           mem_out, 
-           write_data,
-           inb;
-           
-wire [4:0] rd;
-           
-wire  Jump, pcsrc; 
-     
-     
-wire carry,
-     overflow,
-     negative,
-     zero;
-     
-wire [1:0] ALUOp;
+wire [31:0] ID_instruction,
+            ID_pcplus4;
 
+wire [31:0] EX_instruction,
+            EX_pcplus4,
+            EX_branch_addr,
+            EX_jump_addr;
+wire [4:0]  EX_reg_write_addr;
+
+wire [7:0] MEM_aluout,
+           MEM_read_data2,
+           MEM_mem_data;
+wire [4:0] MEM_reg_write_addr;
+
+wire [7:0] WB_mem_data,
+           WB_aluout;
+wire [4:0] WB_reg_write_addr;
+
+wire [31:0] next_pc,
+            pc;
+wire [7:0] write_data;
+
+wire [7:0] ID_read_data1, ID_read_data2, EX_read_data1, EX_read_data2, EX_aluout;
+
+wire EX_cr, EX_ng, EX_ov, EX_zr,
+     MEM_cr, MEM_ng, MEM_ov, MEM_zr;
+
+wire [1:0] ID_ALUOp, 
+           EX_ALUOp;
+            
+wire ID_ALUSrc, 
+     ID_RegDst, 
+     EX_ALUSrc, 
+     EX_RegDst, 
+     ID_Branch, 
+     ID_BranchFlip, 
+     ID_MemRead, 
+     ID_MemWrite, 
+     ID_Jump, 
+     EX_Branch, 
+     EX_BranchFlip, 
+     EX_MemRead, 
+     EX_MemWrite, 
+     EX_Jump, 
+     ID_RegWrite, 
+     ID_MemtoReg, 
+     EX_RegWrite, 
+     EX_MemtoReg;
+
+wire MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_RegWrite, MEM_MemtoReg;
+
+wire WB_RegWrite, WB_MemtoReg;
+
+wire [7:0] inb;
 wire [3:0] operation;
 
+// ####### PROGRAM COUNTER DONE ####### //
 ProgramCounter PC (.clk(clk),
                    .reset(reset),
                    .pc_write(enable),
                    .next_pc(next_pc),
                    .pc(pc));
-                   
-assign pcplus4 = pc + 32'd4;
-                
+// ######################################
+                 
+assign IF_pcplus4 = pc + 32'd4; 
+
+assign next_pc = IF_pcplus4;     
+
+// ####### INSTRUCTION MEMORY DONE ####### //
+
 instruction_mem InstructionMemory (.address(pc),
-                                   .instruction(instruction));
-
-wire [31:0] pcplus4_IFID,
-            instruction_IFID;
-            
-IF_ID IFIDReg (.clk(clk),
-               .pcplus4(pcplus4),
-               .instruction(instruction),
-               .pcplus4_out(pcplus4_IFID),
-               .instruction_out(instruction_IFID));
+                                   .instruction(IF_instruction));
                                    
-RegisterFile RegFile (.rs(instruction_IFID[25:21]),
-                      .rt(instruction_IFID[20:16]),
-                      .rd(rd_MEMWB),
-                      .write_data(write_data),
-                      .RegWrite(WB_MEMWB[RegWrite]),
-                      .clk(clk),
-                      .read_data1(read_data1),
-                      .read_data2(read_data2));
-                      
-wire [1:0] WB; 
-wire [3:0] M, 
-           EX;
-                     
-
-
-
-Control_Unit ControlUnit (.opcode(instruction[31:26]),
-                          .RegDst(EX[RegDst]),
-                          .Jump(Jump),
-                          .Branch(M[Branch]),
-                          .MemRead(M[MemRead]),
-                          .MemtoReg(WB[MemtoReg]),
-                          .ALUOp(EX[2:1]),//ALUOp
-                          .MemWrite(M[MemWrite]),
-                          .ALUSrc(EX[ALUSrc]),
-                          .RegWrite(WB[RegWrite]),
-                          .BranchFlip(M[BranchFlip]));
-                
-assign imm32 = {{16{instruction_IFID[15]}}, instruction_IFID[15:0]}; //sign extend imm
-
-wire [31:0] imm32_IDEX,
-            pcplus4_IDEX;
-wire [7:0] read_data1_IDEX,
-            read_data2_IDEX;
-wire [1:0] WB_IDEX; 
-wire [3:0] M_IDEX, 
-           EX_IDEX;
-wire [4:0] rt_IDEX,
-           rd_IDEX;           
-                                    
-ID_EX IDEXReg (.clk(clk),
-               .WB(WB),
-               .EX(EX),
-               .M(M),
-               .pcplus4(pcplus4_IFID),
-               .read_data1(read_data1),
-               .read_data2(read_data2),
-               .imm32(imm32),
-               .rt(instruction_IFID[20:16]),
-               .rd(instruction_IFID[15:11]),
-               .WB_out(WB_IDEX),
-               .M_out(M_IDEX),
-               .EX_out(EX_IDEX),
-               .pcplus4_out(pcplus4_IDEX),
-               .read_data1_out(read_data1_IDEX),
-               .read_data2_out(read_data2_IDEX),
-               .imm32_out(imm32_IDEX),
-               .rt_out(rt_IDEX),
-               .rd_out(rd_IDEX)
+// ##############################################################                                 
+                                   
+IFID IFID_reg (.IF_instruction(IF_instruction),
+               .IF_pcplus4(IF_pcplus4),
+               .ID_instruction(ID_instruction),
+               .ID_pcplus4(ID_pcplus4),
+               .clk(clk));
                
-);  
-  
-assign inb = (EX_IDEX[ALUSrc]) ? imm32_IDEX[7:0] : read_data2_IDEX;
-    
+// #################################################################   
                           
-ALU_Control ALUControl (.func(imm32_IDEX[5:0]),
-                        .ALUOp(EX_IDEX[2:1]),
+RegisterFile RegFile (.rs(ID_instruction[25:21]),
+                      .rt(ID_instruction[20:16]),
+                      .rd(WB_reg_write_addr),
+                      .write_data(write_data),
+                      .RegWrite(WB_RegWrite),
+                      .clk(clk),
+                      .read_data1(ID_read_data1),
+                      .read_data2(ID_read_data2));
+
+//assign rd = (RegDst) ? instruction[15:11] : instruction[20:16];
+assign write_data = (WB_MemtoReg) ? WB_mem_data : WB_aluout;
+
+// ################### CONTROL UNIT DONE #################################
+Control_Unit ControlUnit (.opcode(ID_instruction[31:26]),
+                          .RegDst(ID_RegDst),
+                          .Jump(ID_Jump),
+                          .Branch(ID_Branch),
+                          .MemRead(ID_MemRead),
+                          .MemtoReg(ID_MemtoReg),
+                          .ALUOp(ID_ALUOp),
+                          .MemWrite(ID_MemWrite),
+                          .ALUSrc(ID_ALUSrc),
+                          .RegWrite(ID_RegWrite),
+                          .BranchFlip(ID_BranchFlip));
+// ########################################################################    
+                      
+IDEX IDEX_reg (.clk(clk),
+               .ID_read_data1(ID_read_data1),
+               .ID_read_data2(ID_read_data2),
+               .EX_read_data1(EX_read_data1),
+               .EX_read_data2(EX_read_data2),
+               .ID_instruction(ID_instruction),
+               .ID_pcplus4(ID_pcplus4),
+               .EX_instruction(EX_instruction),
+               .EX_pcplus4(EX_pcplus4),
+               .ID_ALUOp(ID_ALUOp),
+               .EX_ALUOp(EX_ALUOp),
+               .ID_ALUSrc(ID_ALUSrc),
+               .ID_RegDst(ID_RegDst),
+               .EX_ALUSrc(EX_ALUSrc),
+               .EX_RegDst(EX_RegDst),
+               .ID_Branch(ID_Branch),
+               .ID_BranchFlip(ID_BranchFlip),
+               .ID_MemRead(ID_MemRead),
+               .ID_MemWrite(ID_MemWrite),
+               .ID_Jump(ID_Jump),
+               .EX_Branch(EX_Branch),
+               .EX_BranchFlip(EX_BranchFlip),
+               .EX_MemRead(EX_MemRead),
+               .EX_MemWrite(EX_MemWrite),
+               .EX_Jump(EX_Jump),
+               .ID_RegWrite(ID_RegWrite),
+               .ID_MemtoReg(ID_MemtoReg),
+               .EX_RegWrite(EX_RegWrite),
+               .EX_MemtoReg(EX_MemtoReg));                      
+                      
+// ############ ALU_CONTROL DONE ##########################################
+ALU_Control ALUControl (.func(EX_instruction[5:0]),
+                        .ALUOp(EX_ALUOp),
                         .operation(operation));
                         
-ALU ALU_Module (.ina(read_data1_IDEX),
+// ########################################################################
+
+// ############################ ALU DONE ##################################                     
+ALU ALU_Module (.ina(EX_read_data1),
                 .inb(inb),
-                .shamt(imm32_IDEX[10:6]),
-                .cr(carry),
-                .ov(overflow),
-                .ng(negative),
-                .zr(zero),
+                .shamt(EX_instruction[10:6]),
+                .cr(EX_cr),
+                .ov(EX_ov),
+                .ng(EX_ng),
+                .zr(EX_zr),
                 .operation(operation),
-                .out(ALUOut));
-                
-assign rd = (EX_IDEX[RegDst]) ? imm32_IDEX[15:11] : imm32_IDEX[20:16];
+                .out(EX_aluout));
+                        
+assign inb = (EX_ALUSrc) ? EX_instruction[7:0] : EX_read_data2;
+// ########################################################################
 
+assign EX_jump_addr = {EX_pcplus4[31:28], EX_instruction[25:0], 2'b00};              
+assign EX_branch_addr = EX_pcplus4 + {{14{EX_instruction[15]}}, EX_instruction[15:0], 2'b00};
+assign EX_reg_write_addr = (EX_RegDst) ? EX_instruction[15:11] : EX_instruction[20:16];
 
-wire [1:0] WB_EXMEM;
-wire [3:0] M_EXMEM;
-wire [31:0] branch_addr_EXMEM;
-wire zero_EXMEM;
-wire [7:0] ALUOut_EXMEM, read_data2_EXMEM;
-wire [4:0] rd_EXMEM;
-
-assign branch_addr = pcplus4_IDEX + {imm32_IDEX[29:0], 2'b00};
-
-EX_MEM EXMEMReg (
-    .clk(clk),
-    .WB(WB_IDEX),
-    .M(M_IDEX),
-    .branch_addr(branch_addr),
-    .zero(zero),
-    .ALUOut(ALUOut),
-    .read_data2(read_data2_IDEX),
-    .rd(rd),
-    .WB_out(WB_EXMEM),
-    .M_out(M_EXMEM),
-    .branch_addr_out(branch_addr_EXMEM),
-    .zero_out(zero_EXMEM),
-    .ALUOut_out(ALUOut_EXMEM),
-    .read_data2_out(read_data2_EXMEM),
-    .rd_out(rd_EXMEM)
-);
-
-
-assign pcsrc = (zero_EXMEM ^ M_EXMEM[BranchFlip]) & M_EXMEM[Branch];
-assign next_pc = (pcsrc) ? branch_addr_EXMEM : pcplus4;
+EXMEM EXMEM_reg (.clk(clk),
+                 .EX_aluout(EX_aluout),
+                 .EX_read_data2(EX_read_data2),
+                 .EX_reg_write_addr(EX_reg_write_addr),
+                 .EX_branch_addr(EX_branch_addr),
+                 .EX_jump_addr(EX_jump_addr),
+                 .EX_zr(EX_zr),
+                 .EX_ng(EX_ng),
+                 .EX_cr(EX_cr),
+                 .EX_ov(EX_ov),
+                 .MEM_aluout(MEM_aluout),
+                 .MEM_read_data2(MEM_read_data2),
+                 .MEM_reg_write_addr(MEM_reg_write_addr),
+                 .MEM_branch_addr(MEM_branch_addr),
+                 .MEM_jump_addr(MEM_jump_addr),
+                 .MEM_zr(MEM_zr),
+                 .MEM_ng(MEM_ng),
+                 .MEM_cr(MEM_cr),
+                 .MEM_ov(MEM_ov),
+                 .EX_Branch(EX_Branch),
+                 .EX_BranchFlip(EX_BranchFlip),
+                 .EX_MemRead(EX_MemRead),
+                 .EX_MemWrite(EX_MemWrite),
+                 .EX_Jump(EX_Jump),
+                 .EX_RegWrite(EX_RegWrite),
+                 .EX_MemtoReg(EX_MemtoReg),
+                 .MEM_Branch(MEM_Branch),
+                 .MEM_BranchFlip(MEM_BranchFlip),
+                 .MEM_MemRead(MEM_MemRead),
+                 .MEM_MemWrite(MEM_MemWrite),
+                 .MEM_Jump(MEM_Jump),
+                 .MEM_RegWrite(MEM_RegWrite),
+                 .MEM_MemtoReg(MEM_MemtoReg));
 
 ram_256B RAM (.clk(clk),
-              .addr(ALUOut_EXMEM),
-              .wdata(read_data2_EXMEM),
-              .MemRead(M_EXMEM[MemRead]),
-              .MemWrite(M_EXMEM[MemWrite]),
-              .out(mem_out));
+              .addr(MEM_aluout),
+              .wdata(MEM_read_data2),
+              .MemRead(MEM_MemRead),
+              .MemWrite(MEM_MemWrite),
+              .out(MEM_mem_data));
+              
+MEMWB MEMWB_reg (.clk(clk),
+                 .MEM_mem_data(MEM_mem_data),
+                 .MEM_aluout(MEM_aluout),
+                 .MEM_reg_write_addr(MEM_reg_write_addr),
+                 .MEM_RegWrite(MEM_RegWrite),
+                 .MEM_MemtoReg(MEM_MemtoReg),
+                 .WB_mem_data(WB_mem_data),
+                 .WB_aluout(WB_aluout),
+                 .WB_reg_write_addr(WB_reg_write_addr),
+                 .WB_RegWrite(WB_RegWrite),
+                 .WB_MemtoReg(WB_MemtoReg));
 
-wire [1:0] WB_MEMWB;
-wire [7:0] mem_out_MEMWB, ALUOut_MEMWB;
-wire [4:0] rd_MEMWB;
-
-MEM_WB MEMWBReg (
-    .clk(clk),
-    .WB(WB_EXMEM),
-    .mem_out(mem_out),
-    .ALUOut(ALUOut_EXMEM),
-    .rd(rd_EXMEM),
-    .WB_out(WB_MEMWB),
-    .mem_out_out(mem_out_MEMWB),
-    .ALUOut_out(ALUOut_MEMWB),
-    .rd_out(rd_MEMWB)
-);
-
-
-assign write_data = (WB_MEMWB[MemtoReg]) ? mem_out_MEMWB : ALUOut_MEMWB;
-
-
-//assign next_pc = (Jump) ? jump_addr : pcsrc;
-
-
-
+//assign pcsrc = ((zero ^ BranchFlip) & Branch) ? branch_addr : pcplus4;
 
 endmodule
