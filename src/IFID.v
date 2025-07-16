@@ -26,15 +26,11 @@ input clk;
 input [31:0] IF_instruction, IF_pcplus4;
 output reg [31:0] ID_instruction, ID_pcplus4;
 
-reg [31:0] instruction, pcplus4;
-
 always @(posedge clk) begin
-    instruction <= IF_instruction;
-    pcplus4 <= IF_pcplus4;
+
+    ID_instruction <= IF_instruction;
+    ID_pcplus4 <= IF_pcplus4;    
     
-    ID_instruction <= instruction;
-    ID_pcplus4 <= pcplus4;
-    
-    end    
+end    
 
 endmodule
