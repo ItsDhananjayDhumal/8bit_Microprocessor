@@ -29,15 +29,11 @@ input MEM_RegWrite, MEM_MemtoReg;
 output reg [7:0] WB_mem_data, WB_aluout, WB_reg_write_addr;
 output reg WB_RegWrite, WB_MemtoReg;
 
-reg [7:0] mem_data, aluout, reg_write_addr;
-reg RegWrite, MemtoReg;
-
 always @(posedge clk) begin
-    {mem_data, aluout, reg_write_addr} <= {MEM_mem_data, MEM_aluout, MEM_reg_write_addr};
-    {RegWrite, MemtoReg} <= {MEM_RegWrite, MEM_MemtoReg};
-    
-    {WB_mem_data, WB_aluout, WB_reg_write_addr} <= {mem_data, aluout, reg_write_addr};
-    {WB_RegWrite, WB_MemtoReg} <= {RegWrite, MemtoReg};
+
+    {WB_mem_data, WB_aluout, WB_reg_write_addr} <= {MEM_mem_data, MEM_aluout, MEM_reg_write_addr};
+    {WB_RegWrite, WB_MemtoReg} <= {MEM_RegWrite, MEM_MemtoReg};
+
 end
 
 endmodule
