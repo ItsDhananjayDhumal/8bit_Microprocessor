@@ -21,9 +21,9 @@
 
 
 module forward_unit(
-    input [31:0] ID_EX_rs, ID_EX_rt,
-    input [31:0] EX_MEM_rd, MEM_WB_rd,
-    input EX_MEM_RegWrite, MEM_WB_RegWrite,
+    input [31:0] EX_rs, EX_rt,
+    input [31:0] MEM_rd, WB_rd,
+    input MEM_RegWrite, WB_RegWrite,
     output reg [1:0] ForwardA, ForwardB
 );
 
@@ -33,20 +33,20 @@ always @(*) begin
     ForwardB = 2'b00;
 
     // EX hazard
-    if (EX_MEM_RegWrite && (EX_MEM_rd != 0) && (EX_MEM_rd == ID_EX_rs))
+    if (MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rs))
         ForwardA = 2'b10;
-    if (EX_MEM_RegWrite && (EX_MEM_rd != 0) && (EX_MEM_rd == ID_EX_rt))
+    if (MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rt))
         ForwardB = 2'b10;
 
     // MEM hazard (only if no EX hazard)
-    if (MEM_WB_RegWrite && (MEM_WB_rd != 0) && 
-        !(EX_MEM_RegWrite && (EX_MEM_rd != 0) && (EX_MEM_rd == ID_EX_rs)) &&
-        (MEM_WB_rd == ID_EX_rs))
+    if (WB_RegWrite && (WB_rd != 0) && 
+        !(MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rs)) &&
+        (WB_rd == EX_rs))
         ForwardA = 2'b01;
 
-    if (MEM_WB_RegWrite && (MEM_WB_rd != 0) && 
-        !(EX_MEM_RegWrite && (EX_MEM_rd != 0) && (EX_MEM_rd == ID_EX_rt)) &&
-        (MEM_WB_rd == ID_EX_rt))
+    if (WB_RegWrite && (WB_rd != 0) && 
+        !(MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rt)) &&
+        (WB_rd == EX_rt))
         ForwardB = 2'b01;
 end
 
