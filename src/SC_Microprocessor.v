@@ -83,32 +83,25 @@ wire WB_RegWrite, WB_MemtoReg;
 wire [7:0] inb;
 wire [3:0] operation;
 
-// ####### PROGRAM COUNTER DONE ####### //
+
 ProgramCounter PC (.clk(clk),
                    .reset(reset),
                    .pc_write(enable),
                    .next_pc(next_pc),
                    .pc(pc));
-// ######################################
                  
 assign IF_pcplus4 = pc + 32'd4; 
 
 assign next_pc = IF_pcplus4;     
 
-// ####### INSTRUCTION MEMORY DONE ####### //
-
 instruction_mem InstructionMemory (.address(pc),
                                    .instruction(IF_instruction));
-                                   
-// ##############################################################                                 
-                                   
+                                                                      
 IFID IFID_reg (.IF_instruction(IF_instruction),
                .IF_pcplus4(IF_pcplus4),
                .ID_instruction(ID_instruction),
                .ID_pcplus4(ID_pcplus4),
                .clk(clk));
-               
-// #################################################################   
                           
 RegisterFile RegFile (.rs(ID_instruction[25:21]),
                       .rt(ID_instruction[20:16]),
@@ -119,10 +112,8 @@ RegisterFile RegFile (.rs(ID_instruction[25:21]),
                       .read_data1(ID_read_data1),
                       .read_data2(ID_read_data2));
 
-//assign rd = (RegDst) ? instruction[15:11] : instruction[20:16];
 assign write_data = (WB_MemtoReg) ? WB_mem_data : WB_aluout;
 
-// ################### CONTROL UNIT DONE #################################
 Control_Unit ControlUnit (.opcode(ID_instruction[31:26]),
                           .RegDst(ID_RegDst),
                           .Jump(ID_Jump),
@@ -133,8 +124,7 @@ Control_Unit ControlUnit (.opcode(ID_instruction[31:26]),
                           .MemWrite(ID_MemWrite),
                           .ALUSrc(ID_ALUSrc),
                           .RegWrite(ID_RegWrite),
-                          .BranchFlip(ID_BranchFlip));
-// ########################################################################    
+                          .BranchFlip(ID_BranchFlip));    
                       
 IDEX IDEX_reg (.clk(clk),
                .ID_read_data1(ID_read_data1),
@@ -166,14 +156,10 @@ IDEX IDEX_reg (.clk(clk),
                .EX_RegWrite(EX_RegWrite),
                .EX_MemtoReg(EX_MemtoReg));                      
                       
-// ############ ALU_CONTROL DONE ##########################################
 ALU_Control ALUControl (.func(EX_instruction[5:0]),
                         .ALUOp(EX_ALUOp),
                         .operation(operation));
-                        
-// ########################################################################
-
-// ############################ ALU DONE ##################################                     
+                   
 ALU ALU_Module (.ina(EX_read_data1),
                 .inb(inb),
                 .shamt(EX_instruction[10:6]),
@@ -185,7 +171,6 @@ ALU ALU_Module (.ina(EX_read_data1),
                 .out(EX_aluout));
                         
 assign inb = (EX_ALUSrc) ? EX_instruction[7:0] : EX_read_data2;
-// ########################################################################
 
 assign EX_jump_addr = {EX_pcplus4[31:28], EX_instruction[25:0], 2'b00};              
 assign EX_branch_addr = EX_pcplus4 + {{14{EX_instruction[15]}}, EX_instruction[15:0], 2'b00};
