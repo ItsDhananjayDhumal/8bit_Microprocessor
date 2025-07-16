@@ -33,19 +33,19 @@ always @(*) begin
     ForwardB = 2'b00;
 
     // EX hazard
-    if (MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rs))
+    if (MEM_RegWrite && (MEM_rd != 5'd31) && (MEM_rd == EX_rs))
         ForwardA = 2'b10;
-    if (MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rt))
+    if (MEM_RegWrite && (MEM_rd != 5'd31) && (MEM_rd == EX_rt))
         ForwardB = 2'b10;
 
     // MEM hazard (only if no EX hazard)
-    if (WB_RegWrite && (WB_rd != 0) && 
-        !(MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rs)) &&
+    if (WB_RegWrite && (WB_rd != 5'd31) && 
+        !(MEM_RegWrite && (MEM_rd != 5'd31) && (MEM_rd == EX_rs)) &&
         (WB_rd == EX_rs))
         ForwardA = 2'b01;
 
-    if (WB_RegWrite && (WB_rd != 0) && 
-        !(MEM_RegWrite && (MEM_rd != 0) && (MEM_rd == EX_rt)) &&
+    if (WB_RegWrite && (WB_rd != 5'd31) && 
+        !(MEM_RegWrite && (MEM_rd != 5'd31) && (MEM_rd == EX_rt)) &&
         (WB_rd == EX_rt))
         ForwardB = 2'b01;
 end
