@@ -17,7 +17,7 @@
 // Revision 0.01 - File Created
 // Additional Comments:
 // 
-/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 
 
 module RegisterFile(
@@ -34,12 +34,11 @@ module RegisterFile(
     reg [7:0] registers [31:0];
 
 
-    assign read_data1 = (rs == 5'd31) ? 8'd0 : registers[rs];
-    assign read_data2 = (rt == 5'd31) ? 8'd0 : registers[rt];
+    assign read_data1 = (rs == 5'd31) ? 8'd0 : ((rs == rd) && RegWrite) ? write_data : registers[rs];
+    assign read_data2 = (rt == 5'd31) ? 8'd0 : ((rt == rd) && RegWrite) ? write_data : registers[rt];
 
     always @(posedge clk) begin
         if (RegWrite)
             registers[rd] <= write_data;
     end
 endmodule
-
