@@ -47,7 +47,13 @@ wire [4:0] WB_reg_write_addr;
 
 wire [31:0] next_pc,
             pc;
-wire [7:0] write_data;
+wire [7:0] write_data,
+           ina,
+           alu_b_src;
+           
+wire [4:0] EX_rs, EX_rt;
+
+wire [1:0] ForwardA, ForwardB;
 
 wire [7:0] ID_read_data1, ID_read_data2, EX_read_data1, EX_read_data2, EX_aluout;
 
@@ -90,9 +96,7 @@ ProgramCounter PC (.clk(clk),
                    .next_pc(next_pc),
                    .pc(pc));
                  
-assign IF_pcplus4 = pc + 32'd4; 
-
-assign next_pc = IF_pcplus4;     
+assign IF_pcplus4 = pc + 32'd4;      
 
 instruction_mem InstructionMemory (.address(pc),
                                    .instruction(IF_instruction));
@@ -160,7 +164,7 @@ ALU_Control ALUControl (.func(EX_instruction[5:0]),
                         .ALUOp(EX_ALUOp),
                         .operation(operation));
                    
-ALU ALU_Module (.ina(EX_read_data1),
+ALU ALU_Module (.ina(ina),
                 .inb(inb),
                 .shamt(EX_instruction[10:6]),
                 .cr(EX_cr),
@@ -169,8 +173,12 @@ ALU ALU_Module (.ina(EX_read_data1),
                 .zr(EX_zr),
                 .operation(operation),
                 .out(EX_aluout));
-                        
-assign inb = (EX_ALUSrc) ? EX_instruction[7:0] : EX_read_data2;
+                
+assign ina = (ForwardA == 2'b01) ? write_data :
+             (ForwardA == 2'b10) ? MEM_aluout : EX_read_data1;
+assign alu_b_src = (ForwardB == 2'b01) ? write_data :
+                   (ForwardB == 2'b10) ? MEM_aluout : EX_read_data2;                        
+assign inb = (EX_ALUSrc) ? EX_instruction[7:0] : alu_b_src;
 
 assign EX_jump_addr = {EX_pcplus4[31:28], EX_instruction[25:0], 2'b00};              
 assign EX_branch_addr = EX_pcplus4 + {{14{EX_instruction[15]}}, EX_instruction[15:0], 2'b00};
@@ -178,7 +186,7 @@ assign EX_reg_write_addr = (EX_RegDst) ? EX_instruction[15:11] : EX_instruction[
 
 EXMEM EXMEM_reg (.clk(clk),
                  .EX_aluout(EX_aluout),
-                 .EX_read_data2(EX_read_data2),
+                 .EX_read_data2(alu_b_src),
                  .EX_reg_write_addr(EX_reg_write_addr),
                  .EX_branch_addr(EX_branch_addr),
                  .EX_jump_addr(EX_jump_addr),
@@ -229,6 +237,19 @@ MEMWB MEMWB_reg (.clk(clk),
                  .WB_RegWrite(WB_RegWrite),
                  .WB_MemtoReg(WB_MemtoReg));
 
+assign EX_rs = EX_instruction[25:21];
+assign EX_rt = EX_instruction[20:16];
+          
+forward_unit Forwarding_Unit (.EX_rs(EX_rs),
+                              .EX_rt(EX_rt),
+                              .MEM_rd(MEM_reg_write_addr),
+                              .WB_rd(WB_reg_write_addr),
+                              .MEM_RegWrite(MEM_RegWrite),
+                              .WB_RegWrite(WB_RegWrite),
+                              .ForwardA(ForwardA),
+                              .ForwardB(ForwardB));
+
 //assign pcsrc = ((zero ^ BranchFlip) & Branch) ? branch_addr : pcplus4;
+assign next_pc = (((MEM_zr ^ MEM_BranchFlip) & MEM_Branch) === 1'b1) ? MEM_branch_addr : IF_pcplus4;
 
 endmodule
