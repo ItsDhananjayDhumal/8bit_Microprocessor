@@ -240,7 +240,7 @@ MEMWB MEMWB_reg (.clk(clk),
 assign EX_rs = EX_instruction[25:21];
 assign EX_rt = EX_instruction[20:16];
           
-forward_unit Forwarding_Unit (.EX_rs(EX_rs),
+forwarding_unit Forwarding_Unit (.EX_rs(EX_rs),
                               .EX_rt(EX_rt),
                               .MEM_rd(MEM_reg_write_addr),
                               .WB_rd(WB_reg_write_addr),
@@ -251,5 +251,6 @@ forward_unit Forwarding_Unit (.EX_rs(EX_rs),
 
 //assign pcsrc = ((zero ^ BranchFlip) & Branch) ? branch_addr : pcplus4;
 assign next_pc = (((MEM_zr ^ MEM_BranchFlip) & MEM_Branch) === 1'b1) ? MEM_branch_addr : IF_pcplus4;
+
 
 endmodule
