@@ -42,4 +42,14 @@ All refernece documents are in this [drive folder](https://drive.google.com/driv
 
 ## Pipelining
 Check [pipeline branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocessor/tree/pipeline) for pipelined version of single cycle microprocessor
-> * The pipelined single cycle microprocessor is not completed yet.
+> * Pipeline registers (IF/ID, ID/EX, EX/MEM, MEM/WB) implemented.
+> * Forwarding Unit implemented.
+> * Register File changed to account for data hazard.
+---
+> * Hazard Detection Unit remaining
+> * Branch Prediction Unit remaining
+
+---
+
+## Compiler and Assembler
+Assembler is done, working on compiler. Ckeck it out [here](https://github.com/Gurupranav-tech/assembler-soc25)
