@@ -51,7 +51,8 @@ wire [7:0] write_data,
            ina,
            alu_b_src;
            
-wire [4:0] EX_rs, EX_rt;
+wire [4:0] EX_rs, EX_rt,
+           ID_rs, ID_rt;
 
 wire [1:0] ForwardA, ForwardB;
 
@@ -105,6 +106,7 @@ IFID IFID_reg (.IF_instruction(IF_instruction),
                .IF_pcplus4(IF_pcplus4),
                .ID_instruction(ID_instruction),
                .ID_pcplus4(ID_pcplus4),
+               .IFID_write(IFID_write),
                .clk(clk));
                           
 RegisterFile RegFile (.rs(ID_instruction[25:21]),
@@ -119,17 +121,40 @@ RegisterFile RegFile (.rs(ID_instruction[25:21]),
 assign write_data = (WB_MemtoReg) ? WB_mem_data : WB_aluout;
 
 Control_Unit ControlUnit (.opcode(ID_instruction[31:26]),
-                          .RegDst(ID_RegDst),
-                          .Jump(ID_Jump),
-                          .Branch(ID_Branch),
-                          .MemRead(ID_MemRead),
-                          .MemtoReg(ID_MemtoReg),
-                          .ALUOp(ID_ALUOp),
-                          .MemWrite(ID_MemWrite),
-                          .ALUSrc(ID_ALUSrc),
-                          .RegWrite(ID_RegWrite),
-                          .BranchFlip(ID_BranchFlip));    
-                      
+                          .RegDst(temp_RegDst),
+                          .Jump(temp_Jump),
+                          .Branch(temp_Branch),
+                          .MemRead(temp_MemRead),
+                          .MemtoReg(temp_MemtoReg),
+                          .ALUOp(temp_ALUOp),
+                          .MemWrite(temp_MemWrite),
+                          .ALUSrc(temp_ALUSrc),
+                          .RegWrite(temp_RegWrite),
+                          .BranchFlip(temp_BranchFlip));    
+
+assign ID_rs = ID_instruction[25:21];
+assign ID_rt = ID_instruction[20:16];
+ 
+hazard_detection_unit HDU(.EX_MemRead(EX_MemRead),
+                           .EX_rt(EX_rt),
+                           .ID_rs(ID_rs),
+                           .ID_rt(ID_rt),
+                           .pc_write(enable),
+                           .IFID_write(IFID_write),
+                           .nop_control(nop_control));
+    
+//assign { ID_RegDst, ID_Jump, ID_Branch, ID_MemRead, ID_MemtoReg, ID_ALUOp, ID_MemWrite, ID_ALUSrc, ID_RegWrite, ID_BranchFlip } = (nop_control ? 11'b0 : { temp_RegDst, temp_Jump, temp_Branch, temp_MemRead, temp_MemtoReg, temp_ALUOp, temp_MemWrite, temp_ALUSrc, temp_RegWrite, temp_BranchFlip }) ;
+assign ID_RegDst     = nop_control ? 1'b0 : temp_RegDst;
+assign ID_Jump       = nop_control ? 1'b0 : temp_Jump;
+assign ID_Branch     = nop_control ? 1'b0 : temp_Branch;
+assign ID_MemRead    = nop_control ? 1'b0 : temp_MemRead;
+assign ID_MemtoReg   = nop_control ? 1'b0 : temp_MemtoReg;
+assign ID_ALUOp      = nop_control ? 2'b00 : temp_ALUOp;
+assign ID_MemWrite   = nop_control ? 1'b0 : temp_MemWrite;
+assign ID_ALUSrc     = nop_control ? 1'b0 : temp_ALUSrc;
+assign ID_RegWrite   = nop_control ? 1'b0 : temp_RegWrite;
+assign ID_BranchFlip = nop_control ? 1'b0 : temp_BranchFlip;
+                                          
 IDEX IDEX_reg (.clk(clk),
                .ID_read_data1(ID_read_data1),
                .ID_read_data2(ID_read_data2),
