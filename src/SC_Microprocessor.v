@@ -245,10 +245,12 @@ EXMEM EXMEM_reg (.clk(clk),
 
 ram_256B RAM (.clk(clk),
               .addr(MEM_aluout),
-              .wdata(MEM_read_data2),
+              .wdata(store_data),
               .MemRead(MEM_MemRead),
               .MemWrite(MEM_MemWrite),
               .out(MEM_mem_data));
+wire [7:0] store_data;
+assign store_data = (StoreDataForward) ? WB_aluout : MEM_data2;
               
 MEMWB MEMWB_reg (.clk(clk),
                  .MEM_mem_data(MEM_mem_data),
