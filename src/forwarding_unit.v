@@ -25,6 +25,7 @@ module forwarding_unit(
     input [4:0] MEM_rd, WB_rd,
     input MEM_RegWrite, WB_RegWrite,
     output reg [1:0] ForwardA, ForwardB
+    output reg StoreDataForward
 );
 
 always @(*) begin
@@ -44,7 +45,14 @@ always @(*) begin
         ForwardB = 2'b10;    
     else
         ForwardB = 2'b00; 
+
+    // Store data hazard forwarding logic
+    if (WB_RegWrite && (WB_rd != 5'd31) && (WB_rd == EX_rt))
+        StoreDataForward = 1'b1;
+    else
+        StoreDataForward = 1'b0;
            
 end
+
 
 endmodule
