@@ -47,7 +47,7 @@ always @(*) begin
         ForwardB = 2'b00; 
 
     // Store data hazard forwarding logic
-    if (WB_RegWrite && (WB_rd != 5'd31) && (WB_rd == EX_rt))
+    if (WB_RegWrite && (WB_rd != 5'd31) && (WB_rd == MEM_rt))
         StoreDataForward = 1'b1;
     else
         StoreDataForward = 1'b0;
