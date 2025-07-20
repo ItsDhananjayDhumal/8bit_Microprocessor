@@ -31,8 +31,8 @@ module IF_ID(
     reg [31:0] instruction_reg = 0;
     
     always @(posedge clk) begin
-            pcplus4_reg <= 0;
-            instruction_reg <= 0;
+            pcplus4_reg <= pcplus4;
+            instruction_reg <= instruction;
     end
     
     assign pcplus4_out = pcplus4_reg;
