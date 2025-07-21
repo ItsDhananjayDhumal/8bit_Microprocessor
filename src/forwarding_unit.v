@@ -21,7 +21,7 @@
 
 
 module forwarding_unit(
-    input [4:0] EX_rs, EX_rt,
+    input [4:0] EX_rs, EX_rt,MEM_rt
     input [4:0] MEM_rd, WB_rd,
     input MEM_RegWrite, WB_RegWrite,
     output reg [1:0] ForwardA, ForwardB
