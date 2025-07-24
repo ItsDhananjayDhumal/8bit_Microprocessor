@@ -20,9 +20,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module SC_Microprocessor(clk, reset, enable);
+module SC_Microprocessor(clk, reset);
 
-input clk, reset, enable;
+input clk, reset;
+
+wire pcsrc, IFID_flush;
+
+wire [1:0] rd_srcA, rd_srcB;
+
+wire [7:0] BPU_in1, BPU_in2;
+
+wire [31:0] pc_addr;
 
 wire [31:0] IF_pcplus4,
             IF_instruction;
@@ -45,12 +53,14 @@ wire [7:0] WB_mem_data,
            WB_aluout;
 wire [4:0] WB_reg_write_addr;
 
+wire enable;
+
 wire [31:0] next_pc,
             pc;
 wire [7:0] write_data,
            ina,
            alu_b_src;
-           
+wire [1:0] temp_ALUOp;         
 wire [4:0] EX_rs, EX_rt,
            ID_rs, ID_rt;
 
@@ -97,7 +107,34 @@ ProgramCounter PC (.clk(clk),
                    .next_pc(next_pc),
                    .pc(pc));
                  
-assign IF_pcplus4 = pc + 32'd4;      
+assign IF_pcplus4 = pc + 32'd4;  
+
+assign next_pc = (pcsrc) ? pc_addr : IF_pcplus4; 
+
+branch_prediction_forwarding_unit BPFU (.ID_rs(ID_rs),
+                                        .ID_rt(ID_rt),
+                                        .EX_reg_write_addr(EX_reg_write_addr),
+                                        .MEM_reg_write_addr(MEM_reg_write_addr),
+                                        .EX_RegWrite(EX_RegWrite),
+                                        .MEM_RegWrite(MEM_RegWrite),
+                                        .rd_srcA(rd_srcA),
+                                        .rd_srcB(rd_srcB));
+
+assign BPU_in1 = (rd_srcA == 2'b10) ? EX_aluout :
+                 (rd_srcA == 2'b01) ? MEM_aluout :
+                 ID_read_data1;
+
+assign BPU_in2 = (rd_srcB == 2'b10) ? EX_aluout :
+                 (rd_srcB == 2'b01) ? MEM_aluout :
+                 ID_read_data2;
+
+branch_prediction_unit BPU (.ID_instruction(ID_instruction),
+                            .ID_pcplus4(ID_pcplus4),
+                            .ID_read_data1(BPU_in1),
+                            .ID_read_data2(BPU_in2),
+                            .pc_addr(pc_addr),
+                            .IFID_flush(IFID_flush),
+                            .pcsrc(pcsrc));
 
 instruction_mem InstructionMemory (.address(pc),
                                    .instruction(IF_instruction));
@@ -107,7 +144,9 @@ IFID IFID_reg (.IF_instruction(IF_instruction),
                .ID_instruction(ID_instruction),
                .ID_pcplus4(ID_pcplus4),
                .IFID_write(IFID_write),
-               .clk(clk));
+               .clk(clk),
+               .reset(reset),
+               .IFID_flush(IFID_flush));
                           
 RegisterFile RegFile (.rs(ID_instruction[25:21]),
                       .rt(ID_instruction[20:16]),
@@ -142,8 +181,8 @@ hazard_detection_unit HDU(.EX_MemRead(EX_MemRead),
                            .pc_write(enable),
                            .IFID_write(IFID_write),
                            .nop_control(nop_control));
-    
-//assign { ID_RegDst, ID_Jump, ID_Branch, ID_MemRead, ID_MemtoReg, ID_ALUOp, ID_MemWrite, ID_ALUSrc, ID_RegWrite, ID_BranchFlip } = (nop_control ? 11'b0 : { temp_RegDst, temp_Jump, temp_Branch, temp_MemRead, temp_MemtoReg, temp_ALUOp, temp_MemWrite, temp_ALUSrc, temp_RegWrite, temp_BranchFlip }) ;
+
+
 assign ID_RegDst     = nop_control ? 1'b0 : temp_RegDst;
 assign ID_Jump       = nop_control ? 1'b0 : temp_Jump;
 assign ID_Branch     = nop_control ? 1'b0 : temp_Branch;
@@ -156,6 +195,7 @@ assign ID_RegWrite   = nop_control ? 1'b0 : temp_RegWrite;
 assign ID_BranchFlip = nop_control ? 1'b0 : temp_BranchFlip;
                                           
 IDEX IDEX_reg (.clk(clk),
+               .reset(reset),
                .ID_read_data1(ID_read_data1),
                .ID_read_data2(ID_read_data2),
                .EX_read_data1(EX_read_data1),
@@ -210,6 +250,7 @@ assign EX_branch_addr = EX_pcplus4 + {{14{EX_instruction[15]}}, EX_instruction[1
 assign EX_reg_write_addr = (EX_RegDst) ? EX_instruction[15:11] : EX_instruction[20:16];
 
 EXMEM EXMEM_reg (.clk(clk),
+                 .reset(reset),
                  .EX_aluout(EX_aluout),
                  .EX_read_data2(alu_b_src),
                  .EX_reg_write_addr(EX_reg_write_addr),
@@ -264,7 +305,7 @@ MEMWB MEMWB_reg (.clk(clk),
 
 assign EX_rs = EX_instruction[25:21];
 assign EX_rt = EX_instruction[20:16];
-         
+          
 forwarding_unit Forwarding_Unit (.EX_rs(EX_rs),
                               .EX_rt(EX_rt),
                               .MEM_rd(MEM_reg_write_addr),
@@ -273,9 +314,5 @@ forwarding_unit Forwarding_Unit (.EX_rs(EX_rs),
                               .WB_RegWrite(WB_RegWrite),
                               .ForwardA(ForwardA),
                               .ForwardB(ForwardB));
-
-//assign pcsrc = ((zero ^ BranchFlip) & Branch) ? branch_addr : pcplus4;
-assign next_pc = (((MEM_zr ^ MEM_BranchFlip) & MEM_Branch) === 1'b1) ? MEM_branch_addr : IF_pcplus4;
-
 
 endmodule
