@@ -85,7 +85,11 @@ always @(*) begin
                     {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, BranchFlip} = 9'b010001000;
                     ALUOp = 2'b00;
                     end
-        
+        // nop
+        6'b111111 : begin
+                  {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, BranchFlip} = 9'b000000000;
+                  ALUOp = 2'b00;
+                  end
         default : begin
                   {RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, BranchFlip} = 9'b000000000;
                   ALUOp = 2'b00;
