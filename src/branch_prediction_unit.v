@@ -32,7 +32,7 @@ wire [31:0] branch_addr;
 wire [5:0] opcode;
 wire [31:0] jump_addr;
 
-parameter JUMP = 6'b100011,
+parameter JUMP = 6'b000010,
           BEQ = 6'b000100,
           BNE = 6'b000001,
           BLT = 6'b000011,
