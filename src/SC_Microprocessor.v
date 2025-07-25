@@ -28,7 +28,7 @@ wire pcsrc, IFID_flush;
 
 wire [1:0] rd_srcA, rd_srcB;
 
-wire [7:0] BPU_in1, BPU_in2;
+wire [7:0] BPU_in1, BPU_in2, MEM_BPU1, MEM_BPU2;
 
 wire [31:0] pc_addr;
 
@@ -120,12 +120,15 @@ branch_prediction_forwarding_unit BPFU (.ID_rs(ID_rs),
                                         .rd_srcA(rd_srcA),
                                         .rd_srcB(rd_srcB));
 
+assign MEM_BPU1 = (MEM_MemRead) ? MEM_mem_data : MEM_aluout;
+assign MEM_BPU2 = (MEM_MemRead) ? MEM_mem_data : MEM_aluout;
+
 assign BPU_in1 = (rd_srcA == 2'b10) ? EX_aluout :
-                 (rd_srcA == 2'b01) ? MEM_aluout :
+                 (rd_srcA == 2'b01) ? MEM_BPU1 :
                  ID_read_data1;
 
 assign BPU_in2 = (rd_srcB == 2'b10) ? EX_aluout :
-                 (rd_srcB == 2'b01) ? MEM_aluout :
+                 (rd_srcB == 2'b01) ? MEM_BPU2 :
                  ID_read_data2;
 
 branch_prediction_unit BPU (.ID_instruction(ID_instruction),
