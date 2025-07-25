@@ -20,8 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module hazard_detection_unit(
-    input reg EX_MemRead,
-    input reg [4:0] EX_rt,
+    input wire EX_MemRead,
+    input wire [4:0] EX_rt,
                      ID_rs,
                      ID_rt,
     output reg pc_write,
@@ -29,15 +29,7 @@ module hazard_detection_unit(
                nop_control
 );
 // NOTE: NOP INSERTED WHEN NOP_CONTROL HIGH
-initial begin
-    pc_write = 1;
-    IFID_write = 1;
-    nop_control = 0;
-    EX_rt = 0;
-    ID_rs = 0;
-    ID_rt = 0;
-    EX_MemRead = 0;
-end
+
 always @(*) begin
     pc_write = 1;
     IFID_write = 1;

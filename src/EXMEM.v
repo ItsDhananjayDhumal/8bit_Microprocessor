@@ -20,9 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module EXMEM(clk, EX_aluout, EX_read_data2, EX_reg_write_addr, EX_branch_addr, EX_jump_addr, EX_zr, EX_ng, EX_cr, EX_ov, MEM_aluout, MEM_read_data2, MEM_reg_write_addr, MEM_branch_addr, MEM_jump_addr, MEM_zr, MEM_ng, MEM_cr, MEM_ov, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg, MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_RegWrite, MEM_MemtoReg);
+module EXMEM(reset, clk, EX_aluout, EX_read_data2, EX_reg_write_addr, EX_branch_addr, EX_jump_addr, EX_zr, EX_ng, EX_cr, EX_ov, MEM_aluout, MEM_read_data2, MEM_reg_write_addr, MEM_branch_addr, MEM_jump_addr, MEM_zr, MEM_ng, MEM_cr, MEM_ov, EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg, MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_RegWrite, MEM_MemtoReg);
 
-input clk;
+input clk, reset;
 input [7:0] EX_aluout, EX_read_data2;
 input [31:0] EX_reg_write_addr, EX_branch_addr, EX_jump_addr;
 input EX_zr, EX_ng, EX_cr, EX_ov;
@@ -37,14 +37,22 @@ output reg MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_
 
 
 always @(posedge clk) begin
-
-    {MEM_aluout, MEM_read_data2, MEM_reg_write_addr, MEM_branch_addr, MEM_jump_addr} <= {EX_aluout, EX_read_data2, EX_reg_write_addr, EX_branch_addr, EX_jump_addr};
-    MEM_ng <= EX_ng;
-    MEM_zr <= EX_zr;
-    MEM_ov <= EX_ov;
-    MEM_cr <= EX_cr; 
-    {MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_RegWrite, MEM_MemtoReg} <= {EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg};
-
+    if(~reset) begin
+        {MEM_aluout, MEM_read_data2, MEM_reg_write_addr, MEM_branch_addr, MEM_jump_addr} <= {EX_aluout, EX_read_data2, EX_reg_write_addr, EX_branch_addr, EX_jump_addr};
+        MEM_ng <= EX_ng;
+        MEM_zr <= EX_zr;
+        MEM_ov <= EX_ov;
+        MEM_cr <= EX_cr; 
+        {MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_RegWrite, MEM_MemtoReg} <= {EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg};
+    end 
+    else begin
+      {MEM_aluout, MEM_read_data2, MEM_reg_write_addr, MEM_branch_addr, MEM_jump_addr} <= 0;
+        MEM_ng <= 0;
+        MEM_zr <= 0;
+        MEM_ov <= 0;
+        MEM_cr <= 0; 
+        {MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_RegWrite, MEM_MemtoReg} <= 0; 
+    end
 end
 
 endmodule
