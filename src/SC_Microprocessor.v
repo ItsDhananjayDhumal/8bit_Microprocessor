@@ -49,6 +49,11 @@ wire [7:0] MEM_aluout,
            MEM_mem_data;
 wire [4:0] MEM_reg_write_addr;
 
+wire temp_RegDst, temp_Jump, temp_Branch, temp_MemRead, temp_MemtoReg, 
+     temp_MemWrite, temp_ALUSrc, temp_RegWrite, temp_BranchFlip;
+wire IFID_write, nop_control;
+wire [31:0] MEM_branch_addr, MEM_jump_addr;
+
 wire [7:0] WB_mem_data,
            WB_aluout;
 wire [4:0] WB_reg_write_addr;
@@ -184,7 +189,6 @@ hazard_detection_unit HDU(.EX_MemRead(EX_MemRead),
                            .pc_write(enable),
                            .IFID_write(IFID_write),
                            .nop_control(nop_control));
-
 
 assign ID_RegDst     = nop_control ? 1'b0 : temp_RegDst;
 assign ID_Jump       = nop_control ? 1'b0 : temp_Jump;
