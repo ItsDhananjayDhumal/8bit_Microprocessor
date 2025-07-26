@@ -42,7 +42,7 @@ always @(*) begin
         rd_srcB = 2'b01;
     else
         rd_srcB = 2'b00;
-           
+
 end
 
 endmodule
