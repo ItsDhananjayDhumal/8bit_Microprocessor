@@ -30,7 +30,7 @@ output reg [31:0] ID_instruction, ID_pcplus4;
 always @(posedge clk) begin
     if (~reset) begin
         if (IFID_flush == 1'b1) begin
-            ID_instruction <= {{6{1'b1}}, {25{1'b0}}};
+            ID_instruction <= 32'b11111100000000000000000000000000;
         end
         else begin
             if (IFID_write) begin
