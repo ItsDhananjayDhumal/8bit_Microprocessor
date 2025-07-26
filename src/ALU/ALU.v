@@ -38,7 +38,8 @@ parameter ADD = 4'b0010,    //Add
           URS = 4'b0101,    //Unsigned Right Shift
           SRS = 4'b0100,    //Signed Right Shift
           RRO = 4'b1000,    //Right Rotate
-          LRO = 4'b1001;    //Left Rotate
+          LRO = 4'b1001,    //Left Rotate
+          RET = 4'b1110;    //return in b
 
 wire [7:0] LeftShift, 
            SignedRightShift, 
@@ -49,7 +50,8 @@ wire [7:0] LeftShift,
            OrOut,
            NotOut,
            AdderOut,
-           SLTOut;
+           SLTOut,
+           ReturnOut;
            
 wire       adder_cout,
            adder_carry,
@@ -95,6 +97,7 @@ assign NotOut = ~(ina);
 
 assign SLTOut = (ina < inb) ? 8'b00000000 : 8'b00000001;
 
+assign ReturnOut = inb;
 // setting output based on operation
 
 always @(*) begin
@@ -124,6 +127,8 @@ always @(*) begin
         out = SLTOut;
     else if (operation == NOT)
         out = NotOut;
+    else if (operation == RET)
+        out = ReturnOut;
 end
 
 // the flags
