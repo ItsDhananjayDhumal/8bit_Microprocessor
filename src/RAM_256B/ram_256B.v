@@ -33,6 +33,13 @@ module ram_256B(
 reg [7:0]mem [255:0];
 
 
+//always @(posedge clk) begin
+//    if (MemRead)
+//        out <= mem[addr];
+//    else if (MemWrite)
+//        mem[addr] <= wdata;
+//end
+    
 always @(posedge clk) begin
     if (MemWrite)
         mem[addr] <= wdata;
@@ -42,26 +49,6 @@ always @(*) begin
     if (MemRead)
         out = mem[addr];
 end   
-integer i, file, frame_count;
-
-initial begin
-    frame_count = 0;
-end
-initial begin
-    for (i = 8'hC0; i <= 8'hFF; i = i + 1)
-        mem[i] = "-"; // ASCII for dash
-end
-always @(posedge clk) begin
-    if (frame_count % 100 == 0) begin  // every 100 cycles
-        file = $fopen("C:\Vivado_Projects\iitisoc_8bitModules\iitisoc_8bitModules.srcs\sources_1\new\framebuffer.txt", "w");
-        for (i = 8'hC0; i <= 8'hFF; i = i + 1) begin
-            $fwrite(file, "%c", mem[i]);
-            if (i[3:0] == 4'hF) $fwrite(file, "\n");  // new line every 16 chars
-        end
-        $fclose(file);
-    end
-    $display("Trying to write frame %0d", frame_count / 100);
-
-    frame_count = frame_count + 1;
-end
+ 
 endmodule
+
