@@ -15,7 +15,6 @@ All refernece documents are in this [drive folder](https://drive.google.com/driv
 
 The processor is completely functional. No bugs were found after rigorous testing. Complete ISA is [here](https://gamma.app/docs/ISA-6oy34bgiz7x9q7z). Microarchitecture is shown above.
 
----
 
 ## Pipelining
 Check [pipeline branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocessor/tree/pipeline) for pipelined version of single cycle microprocessor
@@ -25,13 +24,13 @@ Check [pipeline branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocesso
 > * Hazard Detection Unit done
 > * Branch Prediction Unit with Branch Prediction Forwarding Unit done
 
-** Pipelining done. Check [pipeline branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocessor/tree/pipeline) for code.
+**Pipelining done. Check [pipeline branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocessor/tree/pipeline) for code.**
 
----
 ## JSR and Stack
 For special purpose applications, we plan on adding stack functionalities and JSR through hardware. Check it out in the [jrjal branch](https://github.com/ItsDhananjayDhumal/8bit_Microprocessor/tree/jrjal)
 > * JSR implemented (adder jal and jr, that work without any hazards)
 > * Stack remaining
+
 ---
 
 ## Compiler and Assembler
