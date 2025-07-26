@@ -31,13 +31,15 @@ module hazard_detection_unit(
 // NOTE: NOP INSERTED WHEN NOP_CONTROL HIGH
 
 always @(*) begin
-    pc_write = 1;
-    IFID_write = 1;
-    nop_control = 0;
-    if (EX_MemRead && ((EX_rt == ID_rs) || (EX_rt == ID_rt))) begin
+    if (EX_MemRead && ((EX_rt === ID_rs) || (EX_rt === ID_rt))) begin
         pc_write = 0;
         IFID_write = 0;
         nop_control = 1;
+    end
+    else begin
+        pc_write = 1;
+        IFID_write = 1;
+        nop_control = 0;
     end
 end
 
