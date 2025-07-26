@@ -24,11 +24,13 @@ module SC_Microprocessor(clk, reset);
 
 input clk, reset;
 
+parameter reg_ra = 5'd30;
+
 wire pcsrc, IFID_flush;
 
 wire [1:0] rd_srcA, rd_srcB;
 
-wire [7:0] BPU_in1, BPU_in2, MEM_BPU1, MEM_BPU2;
+wire [7:0] BPU_in1, BPU_in2, MEM_BPU1, MEM_BPU2, EX_ra;
 
 wire [31:0] pc_addr;
 
@@ -49,9 +51,13 @@ wire [7:0] MEM_aluout,
            MEM_mem_data;
 wire [4:0] MEM_reg_write_addr;
 
-wire temp_RegDst, temp_Jump, temp_Branch, temp_MemRead, temp_MemtoReg, 
-     temp_MemWrite, temp_ALUSrc, temp_RegWrite, temp_BranchFlip;
+wire temp_Jump, temp_Branch, temp_MemRead, temp_MemtoReg, 
+     temp_MemWrite, temp_RegWrite, temp_BranchFlip;
+     
+wire [1:0] temp_ALUSrc, temp_RegDst;     
+     
 wire IFID_write, nop_control;
+
 wire [31:0] MEM_branch_addr, MEM_jump_addr;
 
 wire [7:0] WB_mem_data,
@@ -78,12 +84,12 @@ wire EX_cr, EX_ng, EX_ov, EX_zr,
 
 wire [1:0] ID_ALUOp, 
            EX_ALUOp;
+
+wire [1:0] EX_RegDst, EX_ALUSrc;
+
+wire [1:0] ID_ALUSrc, ID_RegDst;
             
-wire ID_ALUSrc, 
-     ID_RegDst, 
-     EX_ALUSrc, 
-     EX_RegDst, 
-     ID_Branch, 
+wire ID_Branch, 
      ID_BranchFlip, 
      ID_MemRead, 
      ID_MemWrite, 
@@ -190,14 +196,14 @@ hazard_detection_unit HDU(.EX_MemRead(EX_MemRead),
                            .IFID_write(IFID_write),
                            .nop_control(nop_control));
 
-assign ID_RegDst     = nop_control ? 1'b0 : temp_RegDst;
+assign ID_RegDst     = nop_control ? 2'b00 : temp_RegDst;
 assign ID_Jump       = nop_control ? 1'b0 : temp_Jump;
 assign ID_Branch     = nop_control ? 1'b0 : temp_Branch;
 assign ID_MemRead    = nop_control ? 1'b0 : temp_MemRead;
 assign ID_MemtoReg   = nop_control ? 1'b0 : temp_MemtoReg;
 assign ID_ALUOp      = nop_control ? 2'b00 : temp_ALUOp;
 assign ID_MemWrite   = nop_control ? 1'b0 : temp_MemWrite;
-assign ID_ALUSrc     = nop_control ? 1'b0 : temp_ALUSrc;
+assign ID_ALUSrc     = nop_control ? 2'b00 : temp_ALUSrc;
 assign ID_RegWrite   = nop_control ? 1'b0 : temp_RegWrite;
 assign ID_BranchFlip = nop_control ? 1'b0 : temp_BranchFlip;
                                           
@@ -230,7 +236,8 @@ IDEX IDEX_reg (.clk(clk),
                .ID_RegWrite(ID_RegWrite),
                .ID_MemtoReg(ID_MemtoReg),
                .EX_RegWrite(EX_RegWrite),
-               .EX_MemtoReg(EX_MemtoReg));                      
+               .EX_MemtoReg(EX_MemtoReg),
+               .EX_ra(EX_ra));                      
                       
 ALU_Control ALUControl (.func(EX_instruction[5:0]),
                         .ALUOp(EX_ALUOp),
@@ -250,11 +257,13 @@ assign ina = (ForwardA == 2'b01) ? write_data :
              (ForwardA == 2'b10) ? MEM_aluout : EX_read_data1;
 assign alu_b_src = (ForwardB == 2'b01) ? write_data :
                    (ForwardB == 2'b10) ? MEM_aluout : EX_read_data2;                        
-assign inb = (EX_ALUSrc) ? EX_instruction[7:0] : alu_b_src;
+assign inb = (EX_ALUSrc == 2'b01) ? EX_instruction[7:0] : 
+             (EX_ALUSrc == 2'b10) ? EX_ra : alu_b_src;
 
 assign EX_jump_addr = {EX_pcplus4[31:28], EX_instruction[25:0], 2'b00};              
 assign EX_branch_addr = EX_pcplus4 + {{14{EX_instruction[15]}}, EX_instruction[15:0], 2'b00};
-assign EX_reg_write_addr = (EX_RegDst) ? EX_instruction[15:11] : EX_instruction[20:16];
+assign EX_reg_write_addr = (EX_RegDst == 2'b01) ? EX_instruction[15:11] :
+                           (EX_RegDst == 2'b10) ? reg_ra : EX_instruction[20:16];
 
 EXMEM EXMEM_reg (.clk(clk),
                  .reset(reset),
