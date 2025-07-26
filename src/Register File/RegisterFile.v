@@ -42,3 +42,4 @@ module RegisterFile(
             registers[rd] <= write_data;
     end
 endmodule
+
