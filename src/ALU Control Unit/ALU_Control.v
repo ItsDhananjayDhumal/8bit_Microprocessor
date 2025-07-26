@@ -35,15 +35,16 @@ parameter ADD = 4'b0010,    //Add
           URS = 4'b0101,    //Unsigned Right Shift
           SRS = 4'b0100,    //Signed Right Shift
           ROR = 4'b1000,    //Right Rotate
-          ROL = 4'b1001;    //Left Rotate
+          ROL = 4'b1001,    //Left Rotate
+          RET = 4'b1110;    //Return input B
 
 always @(*) begin
     if (ALUOp == 2'b00)             // LW, SW, ADDi, LWi
         operation = ADD;
     else if (ALUOp == 2'b01)        // SUBi, Branch (BNE, BEQ)
         operation = SUB;
-    else if (ALUOp == 2'b11)        // Branch (BLT)
-        operation = SLT;
+    else if (ALUOp == 2'b11)        // return B input
+        operation = RET;
     else if (ALUOp == 2'b10) begin  // R Type
         if (func == 6'b000000)
             operation = ADD;
