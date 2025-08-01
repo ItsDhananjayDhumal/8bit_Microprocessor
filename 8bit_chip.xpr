@@ -4,10 +4,10 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="65" Path="C:/Users/karan/OneDrive/Desktop/projects/8bit_Modules/8bit_chip.xpr">
+<Project Product="Vivado" Version="7" Minor="65" Path="C:/Users/Dhananjay Dhumal/pipeline/pipeline.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="32510164649544868602cd2ff66d2bc1"/>
+    <Option Name="Id" Val="8acdb37cbb834841a9ada5a7cca44360"/>
     <Option Name="Part" Val="xc7k70tfbv676-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -59,7 +59,7 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="FeatureSet" Val="FeatureSet_Classic"/>
-    <Option Name="WTXSimLaunchSim" Val="27"/>
+    <Option Name="WTXSimLaunchSim" Val="438"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -90,96 +90,199 @@
   <FileSets Version="1" Minor="32">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PPRDIR/src/ALU/adder/ripple_carry_adder.v">
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/ALU.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/ALU.v"/>
+          <Attr Name="ImportTime" Val="1750764246"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/ALU_Adder.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/ALU_Adder.v"/>
+          <Attr Name="ImportTime" Val="1750624697"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/ALU_Control.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/ALU_Control.v"/>
+          <Attr Name="ImportTime" Val="1750625780"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/Control_Unit.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/Control_Unit.v"/>
+          <Attr Name="ImportTime" Val="1750683377"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/EXMEM.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/LogicalUnit/LogicalUnit.v">
+      <File Path="$PSRCDIR/sources_1/new/IDEX.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/comparator/comparator.v">
+      <File Path="$PSRCDIR/sources_1/new/IFID.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/left_shift/left_shift.v">
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/Instruction_Mem.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/Instruction_Mem.v"/>
+          <Attr Name="ImportTime" Val="1750684215"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/adder/look_ahead_adder.v">
+      <File Path="$PSRCDIR/sources_1/new/MEMWB.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/rotate/rotate_left.v">
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/PC.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/PC.v"/>
+          <Attr Name="ImportTime" Val="1750683527"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/rotate/rotate_right.v">
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/RegisterFile.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/RegisterFile.v"/>
+          <Attr Name="ImportTime" Val="1750685034"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/right_shift/signed_right_shift.v">
+      <File Path="$PSRCDIR/sources_1/new/branch_prediction_forwarding_unit.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/right_shift/unsigned_right_shift.v">
+      <File Path="$PSRCDIR/sources_1/new/branch_prediction_unit.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/Registers/RegisterFile.v">
+      <File Path="$PSRCDIR/sources_1/new/forwarding_unit.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/Program_Counter/PC.v">
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/left_shift.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/left_shift.v"/>
+          <Attr Name="ImportTime" Val="1750575149"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/ram_256B.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/ram_256B.v"/>
+          <Attr Name="ImportTime" Val="1750684059"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/rotate_left.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/rotate_left.v"/>
+          <Attr Name="ImportTime" Val="1750575772"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/rotate_right.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/rotate_right.v"/>
+          <Attr Name="ImportTime" Val="1750575597"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/signed_right_shift.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/signed_right_shift.v"/>
+          <Attr Name="ImportTime" Val="1750575144"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/unsigned_right_shift.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/unsigned_right_shift.v"/>
+          <Attr Name="ImportTime" Val="1750575146"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/hazard_detection_unit.v">
+        <FileInfo SFType="SVerilog">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/8Bit_Microprocessor_SingleCycle/8Bit_Microprocessor_SingleCycle.srcs/sources_1/new/SC_Microprocessor.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../8Bit_Microprocessor_SingleCycle/8Bit_Microprocessor_SingleCycle.srcs/sources_1/new/SC_Microprocessor.v"/>
+          <Attr Name="ImportTime" Val="1750942353"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/Dhananjay Dhumal/verilog_practice/verilog_practice.srcs/sources_1/new/machinecode.mem">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog_practice/verilog_practice.srcs/sources_1/new/machinecode.mem"/>
+          <Attr Name="ImportTime" Val="1750684316"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="ripple_carry_adder"/>
+        <Option Name="TopModule" Val="SC_Microprocessor"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
     </FileSet>
@@ -191,73 +294,23 @@
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1" RelGenDir="$PGENDIR/sim_1">
       <Filter Type="Srcs"/>
-      <File Path="$PPRDIR/src/Registers/RegisterFile_tb.v">
+      <File Path="$PSRCDIR/sim_1/new/SC_Microprocessor_tb.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/src/ALU/adder/RCA_testbench.v">
+      <File Path="$PPRDIR/SC_Microprocessor_tb_behav.wcfg">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/ALU/adder/CLA_testbench.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/ALU/LogicalUnit/LogicalUnit_tb.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/ALU/comparator/comparator_tb.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/ALU/left_shift/left_shift_testbench.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/ALU/right_shift/right_shift_testbench.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/src/ALU/rotate/rotate_testbench.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="Regisger_tb"/>
+        <Option Name="TopModule" Val="SC_Microprocessor_tb"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
+        <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
         <Option Name="SelectedSimModel" Val="rtl"/>
@@ -266,6 +319,7 @@
         <Option Name="PamSignalDriverFile" Val="xil_bypass_driver"/>
         <Option Name="PamPseudoTop" Val="pseudo_tb"/>
         <Option Name="SrcSet" Val="sources_1"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/SC_Microprocessor_tb_behav.wcfg"/>
       </Config>
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
@@ -294,16 +348,17 @@
     </Simulator>
   </Simulators>
   <Runs Version="1" Minor="21">
-    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7k70tfbv676-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" WriteIncrSynthDcp="false" State="current" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1">
+    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7k70tfbv676-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2023"/>
         <Step Id="synth_design"/>
       </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2023"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7k70tfbv676-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1">
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7k70tfbv676-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" LaunchOptions="-jobs 10 " AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2023"/>
         <Step Id="init_design"/>
@@ -316,6 +371,7 @@
         <Step Id="post_route_phys_opt_design"/>
         <Step Id="write_bitstream"/>
       </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2023"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
