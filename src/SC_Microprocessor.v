@@ -20,11 +20,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module SC_Microprocessor(clk, reset);
+(*dont_touch = "true"*)
+ module SC_Microprocessor(clk, reset, btn0, btn1, btn2, btn3, frame_buffer);
 
-input clk, reset;
+input clk, reset, btn0, btn1, btn2, btn3;
+output [7:0] frame_buffer;
 
-parameter reg_ra = 5'd30;
+
+parameter reg_ra = 5'd30,
+          reg_sp = 5'd29;
 
 wire pcsrc, IFID_flush;
 
@@ -151,6 +155,8 @@ branch_prediction_unit BPU (.ID_instruction(ID_instruction),
                             .pcsrc(pcsrc));
 
 instruction_mem InstructionMemory (.address(pc),
+                                   .reset(reset),
+                                   .clk(clk),
                                    .instruction(IF_instruction));
                                                                       
 IFID IFID_reg (.IF_instruction(IF_instruction),
@@ -162,12 +168,17 @@ IFID IFID_reg (.IF_instruction(IF_instruction),
                .reset(reset),
                .IFID_flush(IFID_flush));
                           
-RegisterFile RegFile (.rs(ID_instruction[25:21]),
+RegisterFile RegFile (.reset(reset),
+                      .rs(ID_instruction[25:21]),
                       .rt(ID_instruction[20:16]),
                       .rd(WB_reg_write_addr),
                       .write_data(write_data),
                       .RegWrite(WB_RegWrite),
                       .clk(clk),
+                      .btn0(btn0),
+                      .btn1(btn1),
+                      .btn2(btn2),
+                      .btn3(btn3),
                       .read_data1(ID_read_data1),
                       .read_data2(ID_read_data2));
 
@@ -301,11 +312,13 @@ EXMEM EXMEM_reg (.clk(clk),
                  .MEM_MemtoReg(MEM_MemtoReg));
 
 ram_256B RAM (.clk(clk),
+              .reset(reset),
               .addr(MEM_aluout),
               .wdata(MEM_read_data2),
               .MemRead(MEM_MemRead),
               .MemWrite(MEM_MemWrite),
-              .out(MEM_mem_data));
+              .out(MEM_mem_data),
+              .fb(frame_buffer));
               
 MEMWB MEMWB_reg (.clk(clk),
                  .MEM_mem_data(MEM_mem_data),
@@ -323,12 +336,12 @@ assign EX_rs = EX_instruction[25:21];
 assign EX_rt = EX_instruction[20:16];
           
 forwarding_unit Forwarding_Unit (.EX_rs(EX_rs),
-                              .EX_rt(EX_rt),
-                              .MEM_rd(MEM_reg_write_addr),
-                              .WB_rd(WB_reg_write_addr),
-                              .MEM_RegWrite(MEM_RegWrite),
-                              .WB_RegWrite(WB_RegWrite),
-                              .ForwardA(ForwardA),
-                              .ForwardB(ForwardB));
+                                 .EX_rt(EX_rt),
+                                 .MEM_rd(MEM_reg_write_addr),
+                                 .WB_rd(WB_reg_write_addr),
+                                 .MEM_RegWrite(MEM_RegWrite),
+                                 .WB_RegWrite(WB_RegWrite),
+                                 .ForwardA(ForwardA),
+                                 .ForwardB(ForwardB));
 
 endmodule
