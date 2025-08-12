@@ -24,15 +24,16 @@ module EXMEM(reset, clk, EX_aluout, EX_read_data2, EX_reg_write_addr, EX_branch_
 
 input clk, reset;
 input [7:0] EX_aluout, EX_read_data2;
-input [31:0] EX_reg_write_addr, EX_branch_addr, EX_jump_addr;
+input [31:0] EX_branch_addr, EX_jump_addr;
 input EX_zr, EX_ng, EX_cr, EX_ov;
+input [4:0] EX_reg_write_addr;
 
 input EX_Branch, EX_BranchFlip, EX_MemRead, EX_MemWrite, EX_Jump, EX_RegWrite, EX_MemtoReg;
 
 output reg [7:0] MEM_aluout, MEM_read_data2;
-output reg [31:0] MEM_reg_write_addr, MEM_branch_addr, MEM_jump_addr;
+output reg [31:0] MEM_branch_addr, MEM_jump_addr;
 output reg MEM_zr, MEM_ng, MEM_cr, MEM_ov;
-
+output reg [4:0] MEM_reg_write_addr;
 output reg MEM_Branch, MEM_BranchFlip, MEM_MemRead, MEM_MemWrite, MEM_Jump, MEM_RegWrite, MEM_MemtoReg;
 
 
